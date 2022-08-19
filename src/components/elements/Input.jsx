@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Input = () => {
-  return;
+  return <div>asd</div>;
 };
 
 export default Input;
