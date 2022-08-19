@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components';
 import { colors } from 'styles/theme';
-import { BsTrash, BsArrowLeft, BsGoogle } from 'react-icons/bs';
+import { BsX, BsTrash, BsArrowLeft, BsGoogle } from 'react-icons/bs';
 import { FiPlusSquare } from 'react-icons/fi';
 import { FaRegComment } from 'react-icons/fa';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { MdHomeFilled } from 'react-icons/md';
 
-// variant : home, plus, arrow, comment, heart_outline, heart_filled, trash, google, text_outline, text_filled
+// variant : xBtn, home, plus, arrow, comment, heart_outline, heart_filled, trash, google, text_outline, text_filled
 // size : small(팔로우), medium(게시, 공유하기), large(소셜로그인)
 const Button = ({ children, size, variant, type, onClickHandler }) => {
   return (
@@ -16,6 +16,7 @@ const Button = ({ children, size, variant, type, onClickHandler }) => {
       type={type}
       onClick={onClickHandler}
     >
+      {variant === 'xBtn' && <BsX size="24px" color={`${colors.black}`} />}
       {variant === 'home' && (
         <MdHomeFilled size="24px" color={`${colors.black}`} />
       )}
@@ -47,7 +48,7 @@ const Button = ({ children, size, variant, type, onClickHandler }) => {
 Button.defaultProps = {
   children: 'button', // 버튼 내부 텍스트
   size: 'large', // 버튼 크기
-  variant: 'text_outline', // 버튼 종류
+  variant: 'xBtn', // 버튼 종류
   type: 'button', // 버튼
   onClickHandler: null, // onClick EventHandler
 };
