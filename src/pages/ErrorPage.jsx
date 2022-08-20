@@ -1,7 +1,8 @@
-import styled from 'styled-components';
+import Error from "components/Error";
+import styled from "styled-components";
 
 const ErrorPage = () => {
-  return;
+  return <Error />;
 };
 
 export default ErrorPage;
