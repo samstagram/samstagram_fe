@@ -1,12 +1,17 @@
-import styled from "styled-components";
-import samstagram_title from "assets/samstagram_logo.png";
-import Input from "components/elements/Input";
-import Button from "./elements/Button";
-import anonymous_user from "assets/anonymous_user.jpg";
-import { colors } from "styles/theme";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import Input from "components/elements/Input";
+import Button from "components/elements/Button";
+import anonymous_user from "assets/anonymous_user.jpg";
+import samstagram_title from "assets/samstagram_logo.png";
+import { colors } from "styles/theme";
+import Modal from "components/layout/Modal";
+import Form from "components/Form";
 
 const Header = () => {
+  const [open, setOpen] = useState(false);
+
   const navigate = useNavigate();
 
   return (
@@ -15,7 +20,21 @@ const Header = () => {
       <Input variant="header" text="검색" />
       <BtnContainer>
         <Button variant="home" onClickHandler={() => navigate("/")} />
-        <Button variant="plus" />
+        <Button
+          variant="plus"
+          onClickHandler={() => {
+            setOpen(!open);
+          }}
+        />
+        {open && (
+          <Modal
+            handleOpenModal={() => {
+              setOpen(!open);
+            }}
+          >
+            <Form />
+          </Modal>
+        )}
         <StProfile alt="user image" src={anonymous_user} />
       </BtnContainer>
     </StNav>
