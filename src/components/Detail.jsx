@@ -1,7 +1,8 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import DetailModal from "../components/DetailModal";
 
 const Detail = () => {
-  return;
+  return <DetailModal />;
 };
 
 export default Detail;
