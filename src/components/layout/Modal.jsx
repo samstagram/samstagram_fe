@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { colors } from "styles/theme";
-import Detail from "components/Detail";
 
 const Modal = ({ handleOpenModal, children }) => {
   return (
@@ -22,6 +21,7 @@ const StModal = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 11;
 `;
 
 const StModalBody = styled.div`
@@ -30,4 +30,5 @@ const StModalBody = styled.div`
   height: 690px;
   background-color: ${colors.white};
   border-radius: 10px;
+  z-index: 111;
 `;

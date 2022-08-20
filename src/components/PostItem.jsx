@@ -5,6 +5,11 @@ import Button from "components/elements/Button";
 import { useState } from "react";
 import Modal from "components/layout/Modal";
 import Detail from "components/Detail";
+import Carousel from "components/Carousel";
+
+import instagram_05 from "assets/instagram_05.png";
+import instagram_06 from "assets/instagram_05.png";
+import instagram_07 from "assets/instagram_05.png";
 
 const PostItem = () => {
   const [open, setOpen] = useState(false);
@@ -49,18 +54,22 @@ const PostItem = () => {
     }
   };
 
+  const imgArr = [instagram_05, instagram_06, instagram_07];
+
   return (
     <StPostItem>
       <StPostInfo>
         <PostContainer>
-          <img alt="user" src={anonymous_user} />
+          <UserImg alt="user" src={anonymous_user} />
           <span>{username}</span>
         </PostContainer>
         {isMyArticles && (
           <Button variant="trash" onClickHandler={handleDelete} />
         )}
       </StPostInfo>
-      <ImageContainer></ImageContainer>
+      <ImageContainer>
+        <Carousel length="470px">{imgArr}</Carousel>
+      </ImageContainer>
       <StContent>
         <BtnContainer>
           <Button
@@ -111,11 +120,6 @@ const StPostItem = styled.div`
   border-radius: 4px;
   padding-bottom: 20px;
   background-color: ${colors.white};
-
-  img {
-    width: 100%;
-    border-radius: 50%;
-  }
 `;
 
 const StPostInfo = styled.div`
@@ -142,10 +146,11 @@ const PostContainer = styled.div`
   span {
     font-weight: 600;
   }
+`;
 
-  img {
-    width: 32px;
-  }
+const UserImg = styled.img`
+  width: 32px;
+  border-radius: 50%;
 `;
 
 const ImageContainer = styled.div`

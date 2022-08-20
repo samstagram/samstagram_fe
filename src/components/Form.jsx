@@ -3,6 +3,11 @@ import styled from "styled-components";
 import Button from "components/elements/Button";
 import { colors } from "styles/theme";
 import anonymous_user from "assets/anonymous_user.jpg";
+import Carousel from "components/Carousel";
+
+import instagram_05 from "assets/instagram_05.png";
+import instagram_06 from "assets/instagram_05.png";
+import instagram_07 from "assets/instagram_05.png";
 
 const Form = ({ handleOpenModal, onChangeHandler }) => {
   const [text, setText] = useState("");
@@ -15,6 +20,8 @@ const Form = ({ handleOpenModal, onChangeHandler }) => {
     setText(val);
   };
 
+  const imgArr = [instagram_05, instagram_06, instagram_07];
+
   return (
     <DetailContainer>
       <DetailHeader>
@@ -23,7 +30,9 @@ const Form = ({ handleOpenModal, onChangeHandler }) => {
         <Button variant="text">공유하기</Button>
       </DetailHeader>
       <DetailBody>
-        <StImage></StImage>
+        <StImage>
+          <Carousel length="640px">{imgArr}</Carousel>
+        </StImage>
         <StContent>
           <StUser>
             <StImg>
@@ -87,7 +96,6 @@ const DetailBody = styled.div`
 const StImage = styled.div`
   width: 640px;
   height: 640px;
-  background: pink;
 `;
 
 const StContent = styled.div`

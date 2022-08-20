@@ -32,7 +32,7 @@ const Header = () => {
               setOpen(!open);
             }}
           >
-            <Form />
+            <Form handleOpenModal={() => setOpen(!open)} />
           </Modal>
         )}
         <StProfile alt="user image" src={anonymous_user} />

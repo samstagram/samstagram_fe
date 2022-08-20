@@ -2,9 +2,13 @@ import styled from "styled-components";
 import Button from "components/elements/Button";
 import { colors } from "styles/theme";
 import anonymous_user from "assets/anonymous_user.jpg";
-import Input from "components/elements/Input";
 import CommentList from "components/CommentList";
 import CommentForm from "components/CommentForm";
+import Carousel from "components/Carousel";
+
+import instagram_05 from "assets/instagram_05.png";
+import instagram_06 from "assets/instagram_05.png";
+import instagram_07 from "assets/instagram_05.png";
 
 const Detail = ({ handleOpenModal }) => {
   const article = {
@@ -29,6 +33,8 @@ const Detail = ({ handleOpenModal }) => {
     image,
   } = article;
 
+  const imgArr = [instagram_05, instagram_06, instagram_07];
+
   return (
     <DetailContainer>
       <DetailHeader>
@@ -36,12 +42,12 @@ const Detail = ({ handleOpenModal }) => {
         {isMyArticles && <Button variant="text">삭제하기</Button>}
       </DetailHeader>
       <DetailBody>
-        <StImage></StImage>
+        <StImage>
+          <Carousel length="640px">{imgArr}</Carousel>
+        </StImage>
         <StContent>
           <StUser>
-            <StImg>
-              <img alt="user" src={anonymous_user} />
-            </StImg>
+            <StImg alt="user" src={anonymous_user} />
             <StName>{username}</StName>
           </StUser>
           <CommentList />
@@ -93,7 +99,10 @@ const DetailBody = styled.div`
 const StImage = styled.div`
   width: 640px;
   height: 640px;
-  background: pink;
+
+  div {
+    width: 100%;
+  }
 `;
 
 const StContent = styled.div`
@@ -111,8 +120,7 @@ const StUser = styled.div`
   gap: 10px;
 `;
 
-const StImg = styled.div`
-  display: flex;
+const StImg = styled.img`
   width: 32px;
   border-radius: 50%;
 `;
