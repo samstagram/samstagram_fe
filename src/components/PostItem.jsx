@@ -3,8 +3,12 @@ import anonymous_user from "assets/anonymous_user.jpg";
 import { colors } from "styles/theme";
 import Button from "components/elements/Button";
 import { useState } from "react";
+import Modal from "components/layout/Modal";
+import Detail from "components/Detail";
 
 const PostItem = () => {
+  const [open, setOpen] = useState(false);
+
   const item = {
     articlesId: 4,
     createdAt: "2022년 08월 24일 12시 17분",
@@ -49,7 +53,7 @@ const PostItem = () => {
     <StPostItem>
       <StPostInfo>
         <PostContainer>
-          <img alt="user image" src={anonymous_user} />
+          <img alt="user" src={anonymous_user} />
           <span>{username}</span>
         </PostContainer>
         {isMyArticles && (
@@ -63,7 +67,21 @@ const PostItem = () => {
             onClickHandler={() => setLike(!like)}
             variant={like ? "heart_filled" : "heart_outline"}
           />
-          <Button variant="comment" />
+          <Button
+            variant="comment"
+            onClickHandler={() => {
+              setOpen(!open);
+            }}
+          />
+          {open && (
+            <Modal
+              handleOpenModal={() => {
+                setOpen(!open);
+              }}
+            >
+              <Detail handleOpenModal={() => setOpen(!open)} />
+            </Modal>
+          )}
         </BtnContainer>
         <StLike>
           <span>

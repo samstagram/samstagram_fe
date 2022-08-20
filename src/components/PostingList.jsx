@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import PostItem from "./PostItem";
+import PostItem from "components/PostItem";
 
 const PostingList = () => {
   return (

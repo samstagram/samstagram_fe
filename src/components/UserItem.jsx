@@ -21,7 +21,7 @@ const UserItem = () => {
   };
   return (
     <StProfile follow={follow}>
-      <img alt="user image" src={anonymous_user} />
+      <img alt="user" src={anonymous_user} />
       <NameContainer>
         <StName>{username}</StName>
         <StEmail>{useremail}</StEmail>

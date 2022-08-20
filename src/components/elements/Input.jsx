@@ -1,7 +1,14 @@
 import styled, { css } from "styled-components";
 
-const Input = ({ variant, text }) => {
-  return <StInput variant={variant} placeholder={text} />;
+const Input = ({ variant, text, value, onChangeHandler }) => {
+  return (
+    <StInput
+      variant={variant}
+      placeholder={text}
+      value={value}
+      onChange={onChangeHandler}
+    />
+  );
 };
 
 export default Input;
@@ -29,9 +36,8 @@ const StInput = styled.input`
       css`
         border: none;
         outline: none;
-        width: 80%;
-        height: 50px;
-        padding: 3px 0;
+        height: 100%;
+        padding: 4px 0;
         font-size: 16px;
         margin-left: 5px;
       `
