@@ -1,7 +1,66 @@
-import styled from 'styled-components';
+import { useState } from "react";
+import styled from "styled-components";
+import Button from "components/elements/Button";
+import anonymous_user from "assets/anonymous_user.jpg";
+import { colors } from "styles/theme";
 
 const UserItem = () => {
-  return;
+  const user = {
+    userId: 1,
+    username: "taemin",
+    useremail: "hanghae99@gmail.com",
+    userprofile: "url",
+    isFollow: false,
+  };
+  const { userId, username, useremail, userprofile, isFollow } = user;
+
+  const [follow, setFollow] = useState(isFollow);
+
+  const handleFollow = () => {
+    setFollow(!follow);
+  };
+  return (
+    <StProfile follow={follow}>
+      <img alt="user image" src={anonymous_user} />
+      <NameContainer>
+        <StName>{username}</StName>
+        <StEmail>{useremail}</StEmail>
+      </NameContainer>
+      <Button variant="text" onClickHandler={handleFollow}>
+        {follow ? "팔로잉" : "팔로우"}
+      </Button>
+    </StProfile>
+  );
 };
 
 export default UserItem;
+
+const StProfile = styled.li`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 56px;
+
+  img {
+    width: 32px;
+    border-radius: 50%;
+    margin-right: 24px;
+  }
+
+  button {
+      color: ${({ follow }) => (follow ? `${colors.black}` : `${colors.blue}`)};
+    }
+  }
+`;
+
+const NameContainer = styled.div`
+  flex-grow: 1;
+`;
+
+const StName = styled.div`
+  font-weight: 500;
+`;
+
+const StEmail = styled.div`
+  color: ${colors.gray1};
+`;
