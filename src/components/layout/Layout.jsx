@@ -11,13 +11,12 @@ const Layout = (props) => {
 };
 
 const LayoutContainer = styled.div`
-  width: 100%;
-  max-width: 1200px;
-  min-width: 800px;
-  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
 `;
 
 export default Layout;
