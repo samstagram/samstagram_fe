@@ -1,16 +1,17 @@
-import { createGlobalStyle } from 'styled-components';
-import { colors } from 'styles/theme';
+import { createGlobalStyle } from "styled-components";
+import { colors } from "styles/theme";
 
 const GlobalStyle = createGlobalStyle`
   * {
-    font-size: 16px;
+    font-size: 14px;
     box-sizing: border-box;
     font-family: 'Noto Sans', 'Noto Sans KR', 'Roboto', sans-serif;
   }
-    
+  
   body {
     margin: 0 auto;
     width: 1440px;
+    background-color: ${colors.gray_bg};
   }
 
   h1 {
@@ -31,10 +32,12 @@ const GlobalStyle = createGlobalStyle`
 
   ul {
     list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   p {
-    font-size: 16px;
+    font-size: 14px;
     margin: 0;
   }
 
