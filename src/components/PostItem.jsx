@@ -49,15 +49,11 @@ const PostItem = () => {
     <StPostItem>
       <StPostInfo>
         <PostContainer>
-          <ImgContainer>
-            <img alt="user image" src={anonymous_user} />
-          </ImgContainer>
+          <img alt="user image" src={anonymous_user} />
           <span>{username}</span>
         </PostContainer>
         {isMyArticles && (
-          <Button variant="text" onClickHandler={handleDelete}>
-            삭제하기
-          </Button>
+          <Button variant="trash" onClickHandler={handleDelete} />
         )}
       </StPostInfo>
       <ImageContainer></ImageContainer>
@@ -112,7 +108,9 @@ const StPostInfo = styled.div`
   padding: 6px;
 
   button {
-    color: ${colors.red};
+    width: 24px;
+    margin-right: 4px;
+    color: ${colors.gray2};
   }
 `;
 
@@ -120,14 +118,16 @@ const PostContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 8px;
   gap: 10px;
+
   span {
     font-weight: 600;
   }
-`;
 
-const ImgContainer = styled.div`
-  width: 32px;
+  img {
+    width: 32px;
+  }
 `;
 
 const ImageContainer = styled.div`
