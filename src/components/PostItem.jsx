@@ -3,8 +3,12 @@ import anonymous_user from "assets/anonymous_user.jpg";
 import { colors } from "styles/theme";
 import Button from "components/elements/Button";
 import { useState } from "react";
+import Modal from "components/layout/Modal";
+import Detail from "components/Detail";
 
 const PostItem = () => {
+  const [open, setOpen] = useState(false);
+
   const item = {
     articlesId: 4,
     createdAt: "2022년 08월 24일 12시 17분",
@@ -49,15 +53,11 @@ const PostItem = () => {
     <StPostItem>
       <StPostInfo>
         <PostContainer>
-          <ImgContainer>
-            <img alt="user image" src={anonymous_user} />
-          </ImgContainer>
+          <img alt="user" src={anonymous_user} />
           <span>{username}</span>
         </PostContainer>
         {isMyArticles && (
-          <Button variant="text" onClickHandler={handleDelete}>
-            삭제하기
-          </Button>
+          <Button variant="trash" onClickHandler={handleDelete} />
         )}
       </StPostInfo>
       <ImageContainer></ImageContainer>
@@ -67,7 +67,21 @@ const PostItem = () => {
             onClickHandler={() => setLike(!like)}
             variant={like ? "heart_filled" : "heart_outline"}
           />
-          <Button variant="comment" />
+          <Button
+            variant="comment"
+            onClickHandler={() => {
+              setOpen(!open);
+            }}
+          />
+          {open && (
+            <Modal
+              handleOpenModal={() => {
+                setOpen(!open);
+              }}
+            >
+              <Detail handleOpenModal={() => setOpen(!open)} />
+            </Modal>
+          )}
         </BtnContainer>
         <StLike>
           <span>
@@ -112,7 +126,9 @@ const StPostInfo = styled.div`
   padding: 6px;
 
   button {
-    color: ${colors.red};
+    width: 24px;
+    margin-right: 4px;
+    color: ${colors.gray2};
   }
 `;
 
@@ -120,14 +136,16 @@ const PostContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 8px;
   gap: 10px;
+
   span {
     font-weight: 600;
   }
-`;
 
-const ImgContainer = styled.div`
-  width: 32px;
+  img {
+    width: 32px;
+  }
 `;
 
 const ImageContainer = styled.div`
