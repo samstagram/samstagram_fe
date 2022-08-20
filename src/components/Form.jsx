@@ -1,7 +1,8 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import FormModal from "../components/FormModal";
 
 const Form = () => {
-  return;
+  return <FormModal />;
 };
 
 export default Form;

@@ -29,10 +29,11 @@ const StInput = styled.input`
       css`
         border: none;
         outline: none;
-        width: 100%;
-        height: 40px;
+        width: 80%;
+        height: 50px;
         padding: 3px 0;
         font-size: 16px;
+        margin-left: 5px;
       `
     );
   }}
