@@ -8,16 +8,28 @@ import Carousel from "components/Carousel";
 import instagram_05 from "assets/instagram_05.png";
 import instagram_06 from "assets/instagram_05.png";
 import instagram_07 from "assets/instagram_05.png";
+import { useDispatch } from "react-redux";
+import { __postPosts } from "redux/modules/postsSlice";
 
 const Form = ({ handleOpenModal, onChangeHandler }) => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState({
+    content: "",
+  });
 
+  const dispatch = useDispatch();
   const username = "test_samsta";
+
+  const onSubmitHandler = (text) => {
+    dispatch(__postPosts(text));
+  };
 
   const handleChange = (e) => {
     const { value } = e.target;
     const val = value.substr(0, 200);
-    setText(val);
+    setText({
+      ...text,
+      content: val,
+    });
   };
 
   const imgArr = [instagram_05, instagram_06, instagram_07];

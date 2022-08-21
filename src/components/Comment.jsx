@@ -5,7 +5,7 @@ import { colors } from "styles/theme";
 const Comment = ({ comment }) => {
   const { commentsId, createdAt, username, useremail, userprofile, content } =
     comment;
-
+  console.log(content);
   return (
     <StComment>
       <StImg alt="user" src={anonymous_user} />

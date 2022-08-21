@@ -10,8 +10,12 @@ import Carousel from "components/Carousel";
 import instagram_05 from "assets/instagram_05.png";
 import instagram_06 from "assets/instagram_05.png";
 import instagram_07 from "assets/instagram_05.png";
+import { useDispatch } from "react-redux";
+import { __deletePosts } from "redux/modules/postsSlice";
 
-const PostItem = () => {
+const PostItem = (props) => {
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
 
   const item = {
@@ -45,9 +49,10 @@ const PostItem = () => {
 
   const [like, setLike] = useState(isLike);
 
-  const handleDelete = () => {
+  const handleDelete = (e) => {
     if (window.confirm("삭제하시겠습니까?")) {
-      console.log("삭제되었습니다");
+      e.stopPropagation();
+      dispatch(__deletePosts(props.post.id));
       window.alert("삭제되었습니다.");
     } else {
       console.log("취소되었습니다.");
@@ -100,7 +105,7 @@ const PostItem = () => {
         <ContentContainer>
           <StText>
             <Stname>{username}</Stname>
-            {content}
+            {props.post.content}
           </StText>
           <StTime>{createdAt}</StTime>
           <StComment onClick={() => console.log("COMMENT CLICKED!")}>
