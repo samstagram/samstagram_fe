@@ -43,6 +43,11 @@ const GlobalStyle = createGlobalStyle`
 
   a {
     text-decoration: none;
+    color: ${colors.black};
+
+    :active {
+      color: ${colors.black};
+    }
   }
 
   button {

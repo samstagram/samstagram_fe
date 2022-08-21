@@ -19,7 +19,11 @@ const Detail = ({ handleOpenModal }) => {
     userprofile: "url",
     isMyArticles: false,
     commentCnt: "9",
-    image: ["url", "url", "url"],
+    image: [
+      "http://localhost:3000/80b985cc-a8e5-4838-9bea-f3761d43bf36",
+      "http://localhost:3000/8458a0c6-a957-4a91-a743-78bbfd0298ac",
+      "http://localhost:3000/9cfc53e6-9708-4594-9ea4-c40b4f8a71ec",
+    ],
   };
 
   const {
@@ -33,8 +37,6 @@ const Detail = ({ handleOpenModal }) => {
     image,
   } = article;
 
-  const imgArr = [instagram_05, instagram_06, instagram_07];
-
   return (
     <DetailContainer>
       <DetailHeader>
@@ -43,7 +45,7 @@ const Detail = ({ handleOpenModal }) => {
       </DetailHeader>
       <DetailBody>
         <StImage>
-          <Carousel length="640px">{imgArr}</Carousel>
+          <Carousel length="640px">{image}</Carousel>
         </StImage>
         <StContent>
           <StUser>
@@ -99,6 +101,7 @@ const DetailBody = styled.div`
 const StImage = styled.div`
   width: 640px;
   height: 640px;
+  border-right: 1px solid ${colors.gray2};
 
   div {
     width: 100%;
@@ -106,7 +109,6 @@ const StImage = styled.div`
 `;
 
 const StContent = styled.div`
-  padding-left: 12px;
   display: flex;
   flex-direction: column;
   width: 360px;
@@ -117,6 +119,7 @@ const StUser = styled.div`
   align-items: center;
   width: 360px;
   height: 60px;
+  padding-left: 12px;
   gap: 10px;
 `;
 

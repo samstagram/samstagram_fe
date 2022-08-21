@@ -27,7 +27,11 @@ const PostItem = (props) => {
     content:
       "잊지마 넌 흐린 어둠 사이 왼손으로 그린 별 하나 보이니 그 유일함이 얼마나 아름다운지 말야 넌 모르지 아직 못다 핀 널 위해 쓰여진 오래된 사랑시 헤매도 좋으니 웃음 짓게 되길. 잊지마 넌 흐린 어둠 사이 왼손으로 그린 별 하나 보이니 그 유일함이 얼마나 아름다운지 말야 넌 모르지 아직 못다 핀 널 위해 쓰여진 오래된 사랑시 헤매도 좋으니 웃음 짓게 되길", // "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type",
     isMyArticles: true,
-    image: ["url", "url", "url"],
+    image: [
+      "blob:http://localhost:3000/80b985cc-a8e5-4838-9bea-f3761d43bf36",
+      "blob:http://localhost:3000/8458a0c6-a957-4a91-a743-78bbfd0298ac",
+      "blob:http://localhost:3000/9cfc53e6-9708-4594-9ea4-c40b4f8a71ec",
+    ],
     isLike: false,
     likeCnt: "5,024",
     commentCnt: "12",
@@ -45,7 +49,7 @@ const PostItem = (props) => {
     isLike,
     likeCnt,
     commentCnt,
-  } = item;
+  } = post;
 
   const [like, setLike] = useState(isLike);
 
@@ -73,7 +77,7 @@ const PostItem = (props) => {
         )}
       </StPostInfo>
       <ImageContainer>
-        <Carousel length="470px">{imgArr}</Carousel>
+        <Carousel length="470px">{image}</Carousel>
       </ImageContainer>
       <StContent>
         <BtnContainer>

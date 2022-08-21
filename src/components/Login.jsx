@@ -2,16 +2,47 @@ import styled from "styled-components";
 import samstagram_logo from "assets/samstagram_logo.png";
 import Button from "components/elements/Button";
 import { colors } from "styles/theme";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
 const Login = () => {
+  const GOOGLE_CLIENT_ID =
+    "877084231575-p8uv6t4s185vln40vhsdab86gnviqurq.apps.googleusercontent.com";
+  const GOOGLE_REDIRECT_URL =
+    "http://sparta-09-tm.shop/api/oauth/google/callback";
+  const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URL}&response_type=code&scope=email%20profile%20openid&access_type=offline`;
+
+  let code = new URL(window.location.href).searchParams.get("code");
+
+  useEffect(() => {
+    if (code) {
+      const google = () => {
+        const res = axios.get(
+          `http://sparta-09-tm.shop/oauth/google/callback?code=${code}`
+        );
+        console.log(res);
+      };
+
+      google();
+    }
+  }, [code]);
+
   return (
     <StLoginContainer>
       <ImageContainer>
         <img alt="samstagram title" src={samstagram_logo} />
       </ImageContainer>
-
       <Button variant="google">
-        <span>Google로 로그인</span>
+        <span>
+          <a
+            href={GOOGLE_AUTH_URL}
+            // href="http://sparta-09-tm.shop/oauth2/authorization/google"
+            target="_blank"
+          >
+            Google로 로그인
+          </a>
+        </span>
       </Button>
       <MessageContainer>
         <span>Instagram Clone Coding Project.</span>

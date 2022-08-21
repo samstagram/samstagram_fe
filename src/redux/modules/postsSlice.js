@@ -3,7 +3,8 @@ import axios from "axios";
 
 const initialState = {
   posts: [],
-  isLoading: false,
+  post: {},
+  isLoading: true,
   error: null,
 };
 
@@ -11,9 +12,18 @@ export const __getPosts = createAsyncThunk(
   "getPosts",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.get("http://localhost:3001/posts");
-      return thunkAPI.fulfillWithValue(data.data);
+      const response = await axios({
+        method: "get",
+        url: "http://15.165.160.40/api/articles?page=1&size=10",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: 'cookie'
+        },
+      });
+      console.log(response.data);
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
+      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }

@@ -62,5 +62,6 @@ const StCommentList = styled.div`
   border-top: 1px solid ${colors.gray2};
   border-bottom: 1px solid ${colors.gray2};
   padding: 8px;
+  padding-left: 12px;
   gap: 4px;
 `;

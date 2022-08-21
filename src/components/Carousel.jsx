@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -20,9 +19,10 @@ const Carousel = ({ children, length }) => {
     <StCarousel>
       <Slider {...settings}>
         {children.map((val) => {
+          // console.log("CAROUSEL", val);
           return (
             <StImg key={val} length={length}>
-              <img alt="post" length={length} src={val} />
+              <img alt="upload post" length={length} src={val} />
             </StImg>
           );
         })}

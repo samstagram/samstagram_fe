@@ -1,26 +1,32 @@
 import styled from "styled-components";
 import PostItem from "components/PostItem";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { __getPosts } from "redux/modules/postsSlice";
+import Loading from "components/Loading";
 
 const PostingList = () => {
   const dispatch = useDispatch();
 
-  const posts = useSelector((state) => state.postsSlice.posts);
+  const { posts, isLoading } = useSelector((state) => state.posts);
+  console.log(posts);
 
   useEffect(() => {
     dispatch(__getPosts());
   }, [dispatch]);
 
   return (
-    <div>
-      <StPostingList>
-        {posts?.map((post) => (
-          <PostItem key={post.id} post={post} />
-        ))}
-      </StPostingList>
-    </div>
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <StPostingList>
+          {posts.map((post) => (
+            <PostItem post={post} />
+          ))}
+        </StPostingList>
+      )}
+    </>
   );
 };
 

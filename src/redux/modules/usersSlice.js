@@ -1,20 +1,27 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const initialState = {};
+const initialState = {
+  username: "",
+  useremail: "",
+  userprofile: "",
+  followingCnt: 0,
+  followersCnt: 0,
+  jwt: "",
+};
 
 export const __getUsers = createAsyncThunk(
-  'getUsers',
+  "getUsers",
   async (payload, thunkAPI) => {}
 );
 
 export const __postUsers = createAsyncThunk(
-  'postUsers',
+  "postUsers",
   async (payload, thunkAPI) => {}
 );
 
 export const usersSlice = createSlice({
-  name: 'usersSlice',
+  name: "usersSlice",
   initialState,
   reducers: {},
   extraReducers: {
