@@ -8,7 +8,6 @@ const PostingList = () => {
   const dispatch = useDispatch();
 
   const posts = useSelector((state) => state.postsSlice.posts);
-
   useEffect(() => {
     dispatch(__getPosts());
   }, [dispatch]);

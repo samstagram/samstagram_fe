@@ -2,10 +2,8 @@ import styled from "styled-components";
 import anonymous_user from "assets/anonymous_user.jpg";
 import { colors } from "styles/theme";
 
-const Comment = ({ comment }) => {
-  const { commentsId, createdAt, username, useremail, userprofile, content } =
-    comment;
-  console.log(content);
+const Comment = (props) => {
+  console.log(props.content.content);
   return (
     <StComment>
       <StImg>
@@ -14,11 +12,11 @@ const Comment = ({ comment }) => {
       <StText>
         <StContent>
           <p>
-            <span>{username}</span>
-            {content}
+            <span>test_samsta</span>
+            {props.content.content}
           </p>
         </StContent>
-        <StTime>{createdAt}</StTime>
+        <StTime>날짜</StTime>
       </StText>
     </StComment>
   );

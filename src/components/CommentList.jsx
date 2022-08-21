@@ -10,12 +10,12 @@ import { useEffect } from "react";
 const CommentList = () => {
   const dispatch = useDispatch();
 
-  const commentList = useSelector((state) => state.commentsSlice);
+  const commentList = useSelector((state) => state.comments.comments);
 
-  console.log(commentList);
   useEffect(() => {
     dispatch(__getComments());
   }, [dispatch]);
+
   // [
   //   {
   //     commentsId: 3,
@@ -44,11 +44,13 @@ const CommentList = () => {
   // ];
 
   return (
-    <StCommentList>
-      {commentList?.map((val) => (
-        <Comment key={val.id} comment={val} />
-      ))}
-    </StCommentList>
+    <div>
+      <StCommentList>
+        {commentList?.map((comment) => (
+          <Comment key={comment.id} content={comment} />
+        ))}
+      </StCommentList>
+    </div>
   );
 };
 
