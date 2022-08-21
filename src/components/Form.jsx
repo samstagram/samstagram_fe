@@ -3,45 +3,67 @@ import styled from "styled-components";
 import Button from "components/elements/Button";
 import { colors } from "styles/theme";
 import anonymous_user from "assets/anonymous_user.jpg";
+import { useDispatch } from "react-redux";
+import { __postPosts } from "redux/modules/postsSlice";
 
 const Form = ({ handleOpenModal, onChangeHandler }) => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState({
+    content: "",
+  });
 
+  const dispatch = useDispatch();
   const username = "test_samsta";
+
+  const onSubmitHandler = (text) => {
+    dispatch(__postPosts(text));
+  };
 
   const handleChange = (e) => {
     const { value } = e.target;
     const val = value.substr(0, 200);
-    setText(val);
+    setText({
+      ...text,
+      content: val,
+    });
   };
 
   return (
     <DetailContainer>
-      <DetailHeader>
-        <Button variant="arrow" onClickHandler={handleOpenModal} />
-        <h2>새 게시물 만들기</h2>
-        <Button variant="text">공유하기</Button>
-      </DetailHeader>
-      <DetailBody>
-        <StImage></StImage>
-        <StContent>
-          <StUser>
-            <StImg>
-              <img alt="user" src={anonymous_user} />
-            </StImg>
-            <StName>{username}</StName>
-          </StUser>
-          <StTextarea
-            id="samsta-textarea"
-            name="content"
-            rows="12"
-            cols="30"
-            value={text}
-            placeholder="내용을 입력해주세요 (200자 이내)"
-            onChange={handleChange}
-          ></StTextarea>
-        </StContent>
-      </DetailBody>
+      <form>
+        <DetailHeader>
+          <Button variant='arrow' onClickHandler={handleOpenModal} />
+          <h2>새 게시물 만들기</h2>
+
+          <Button
+            variant='text'
+            onClickHandler={() => {
+              onSubmitHandler(text);
+            }}
+          >
+            공유하기
+          </Button>
+        </DetailHeader>
+
+        <DetailBody>
+          <StImage></StImage>
+          <StContent>
+            <StUser>
+              <StImg>
+                <img alt='user' src={anonymous_user} />
+              </StImg>
+              <StName>{username}</StName>
+            </StUser>
+            <StTextarea
+              id='samsta-textarea'
+              name='content'
+              rows='12'
+              cols='30'
+              placeholder='내용을 입력해주세요 (200자 이내)'
+              onChange={handleChange}
+            ></StTextarea>
+          </StContent>
+        </DetailBody>
+      </form>
     </DetailContainer>
   );
 };

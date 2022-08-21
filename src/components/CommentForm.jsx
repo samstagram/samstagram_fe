@@ -1,31 +1,40 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { __postComments } from "redux/modules/commentsSlice";
 import styled from "styled-components";
 import { colors } from "styles/theme";
 import Button from "./elements/Button";
 import Input from "./elements/Input";
 
 const CommentForm = () => {
-  const [text, setText] = useState("");
+  const [comment, setComment] = useState({
+    content: "",
+  });
+
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(__postComments(comment));
   };
 
   const handleChange = (e) => {
     const { value } = e.target;
     const val = value.substr(0, 40);
-    setText(val);
+    setComment({
+      ...comment,
+      content: val,
+    });
   };
 
   return (
     <StForm onSubmit={handleSubmit}>
       <Input
-        variant="comment"
-        text="댓글 달기..."
-        value={text}
+        variant='comment'
+        text='댓글 달기...'
         onChangeHandler={handleChange}
       />
-      <Button type="submit" variant="text">
+      <Button type='submit' variant='text'>
         게시
       </Button>
     </StForm>

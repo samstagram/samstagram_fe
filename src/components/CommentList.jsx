@@ -3,39 +3,50 @@ import Comment from "./Comment";
 import Input from "./elements/Input";
 import Button from "components/elements/Button";
 import { colors } from "styles/theme";
+import { useDispatch, useSelector } from "react-redux";
+import { __getComments } from "redux/modules/commentsSlice";
+import { useEffect } from "react";
 
 const CommentList = () => {
-  const commentList = [
-    {
-      commentsId: 3,
-      createdAt: "2022년 08월 23일 17시 54분",
-      username: "유형엽",
-      useremail: "you@gmail.com",
-      userprofile: "url",
-      content: "좋은 하루 보내세요",
-    },
-    {
-      commentsId: 2,
-      createdAt: "2022년 08월 23일 16시 45분",
-      username: "정성일",
-      useremail: "sung1@gmail.com",
-      userprofile: "url",
-      content: "방가와용",
-    },
-    {
-      commentsId: 1,
-      createdAt: "2022년 08월 22일 17시 54분",
-      username: "이태민",
-      useremail: "sparta@gmail.com",
-      userprofile: "url",
-      content: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-    },
-  ];
+  const dispatch = useDispatch();
+
+  const commentList = useSelector((state) => state.commentsSlice);
+
+  console.log(commentList);
+  useEffect(() => {
+    dispatch(__getComments());
+  }, [dispatch]);
+  // [
+  //   {
+  //     commentsId: 3,
+  //     createdAt: "2022년 08월 23일 17시 54분",
+  //     username: "유형엽",
+  //     useremail: "you@gmail.com",
+  //     userprofile: "url",
+  //     content: "좋은 하루 보내세요",
+  //   },
+  //   {
+  //     commentsId: 2,
+  //     createdAt: "2022년 08월 23일 16시 45분",
+  //     username: "정성일",
+  //     useremail: "sung1@gmail.com",
+  //     userprofile: "url",
+  //     content: "방가와용",
+  //   },
+  //   {
+  //     commentsId: 1,
+  //     createdAt: "2022년 08월 22일 17시 54분",
+  //     username: "이태민",
+  //     useremail: "sparta@gmail.com",
+  //     userprofile: "url",
+  //     content: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
+  //   },
+  // ];
 
   return (
     <StCommentList>
-      {commentList.map((val) => (
-        <Comment key={val.commentsId} comment={val} />
+      {commentList?.map((val) => (
+        <Comment key={val.id} comment={val} />
       ))}
     </StCommentList>
   );
