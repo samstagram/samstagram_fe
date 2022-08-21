@@ -1,20 +1,34 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const initialState = {};
+const initialState = {
+  comments: [],
+  isLoading: false,
+  error: null,
+};
 
 export const __getComments = createAsyncThunk(
-  'getUsers',
-  async (payload, thunkAPI) => {}
+  "getComments",
+  async (payload, thunkAPI) => {
+    try {
+      const data = await axios.get("http://localhost:3001/comments");
+      return thunkAPI.fulfillWithValue(data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
 );
 
 export const __postComments = createAsyncThunk(
-  'postUsers',
-  async (payload, thunkAPI) => {}
+  "postComments",
+  async (payload, thunkAPI) => {
+    const data = await axios.post("http://localhost:3001/comments", payload);
+    return data.data;
+  }
 );
 
 export const commentsSlice = createSlice({
-  name: 'commentsSlice',
+  name: "commentsSlice",
   initialState,
   reducers: {},
   extraReducers: {
@@ -23,18 +37,22 @@ export const commentsSlice = createSlice({
     },
     [__getComments.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
+      state.comments = payload;
     },
     [__getComments.rejected]: (state, { payload }) => {
       state.isLoading = false;
+      state.comments = payload;
     },
     [__postComments.pending]: (state) => {
       state.isLoading = true;
     },
     [__postComments.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
+      state.comments = [...state.comments, payload];
     },
     [__postComments.rejected]: (state, { payload }) => {
       state.isLoading = false;
+      state.comments = payload;
     },
   },
 });

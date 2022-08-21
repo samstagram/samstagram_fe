@@ -5,11 +5,11 @@ import { colors } from "styles/theme";
 const Comment = ({ comment }) => {
   const { commentsId, createdAt, username, useremail, userprofile, content } =
     comment;
-
+  console.log(content);
   return (
     <StComment>
       <StImg>
-        <img alt="user" src={anonymous_user} />
+        <img alt='user' src={anonymous_user} />
       </StImg>
       <StText>
         <StContent>
