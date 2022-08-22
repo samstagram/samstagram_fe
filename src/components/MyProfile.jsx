@@ -5,13 +5,16 @@ import { colors } from "styles/theme";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { __getUsers } from "redux/modules/usersSlice";
+import { getCookie, removeCookie } from "shared/cookie";
+import { useNavigate } from "react-router-dom";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { user, isLoading, error } = useSelector((state) => state.users);
-
-  console.log(user);
+  const { user, isLogin, isLoading, error } = useSelector(
+    (state) => state.users
+  );
 
   useEffect(() => {
     dispatch(__getUsers());
@@ -35,10 +38,11 @@ const MyProfile = () => {
     followingCnt,
   } = user;
 
-  const handleSignout = () => {
+  const handleSignout = async () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
-      console.log("로그아웃 되었습니다.");
+      removeCookie("mycookie");
       window.alert("로그아웃 되었습니다.");
+      (await !getCookie("mycookie")) && (await navigate("/"));
     } else {
       console.log("취소되었습니다.");
     }
