@@ -2,9 +2,14 @@ import styled from "styled-components";
 import Button from "components/elements/Button";
 import { colors } from "styles/theme";
 import anonymous_user from "assets/anonymous_user.jpg";
-import Input from "components/elements/Input";
 import CommentList from "components/CommentList";
 import CommentForm from "components/CommentForm";
+import Carousel from "components/Carousel";
+
+import instagram_05 from "assets/instagram_05.png";
+import instagram_06 from "assets/instagram_05.png";
+import instagram_07 from "assets/instagram_05.png";
+import { useSelector } from "react-redux";
 
 const Detail = ({ handleOpenModal }) => {
   const article = {
@@ -15,8 +20,16 @@ const Detail = ({ handleOpenModal }) => {
     userprofile: "url",
     isMyArticles: false,
     commentCnt: "9",
-    image: ["url", "url", "url"],
+    image: [
+      "http://localhost:3000/80b985cc-a8e5-4838-9bea-f3761d43bf36",
+      "http://localhost:3000/8458a0c6-a957-4a91-a743-78bbfd0298ac",
+      "http://localhost:3000/9cfc53e6-9708-4594-9ea4-c40b4f8a71ec",
+    ],
   };
+
+  const res = useSelector((state) => state.posts);
+
+  console.log(res);
 
   const {
     articlesId,
@@ -36,12 +49,12 @@ const Detail = ({ handleOpenModal }) => {
         {isMyArticles && <Button variant="text">삭제하기</Button>}
       </DetailHeader>
       <DetailBody>
-        <StImage></StImage>
+        <StImage>
+          <Carousel length="640px">{image}</Carousel>
+        </StImage>
         <StContent>
           <StUser>
-            <StImg>
-              <img alt="user" src={anonymous_user} />
-            </StImg>
+            <StImg alt="user" src={anonymous_user} />
             <StName>{username}</StName>
           </StUser>
           <CommentList />
@@ -93,11 +106,14 @@ const DetailBody = styled.div`
 const StImage = styled.div`
   width: 640px;
   height: 640px;
-  background: pink;
+  border-right: 1px solid ${colors.gray2};
+
+  div {
+    width: 100%;
+  }
 `;
 
 const StContent = styled.div`
-  padding-left: 12px;
   display: flex;
   flex-direction: column;
   width: 360px;
@@ -108,11 +124,11 @@ const StUser = styled.div`
   align-items: center;
   width: 360px;
   height: 60px;
+  padding-left: 12px;
   gap: 10px;
 `;
 
-const StImg = styled.div`
-  display: flex;
+const StImg = styled.img`
   width: 32px;
   border-radius: 50%;
 `;

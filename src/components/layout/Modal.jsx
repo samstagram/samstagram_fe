@@ -1,8 +1,21 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import { colors } from "styles/theme";
-import Detail from "components/Detail";
 
 const Modal = ({ handleOpenModal, children }) => {
+  useEffect(() => {
+    document.body.style.cssText = `
+      position: fixed; 
+      top: -${window.scrollY}px;
+      overflow-y: scroll;
+      width: 100%;`;
+    return () => {
+      const scrollY = document.body.style.top;
+      document.body.style.cssText = "";
+      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+    };
+  }, []);
+
   return (
     <StModal onClick={handleOpenModal}>
       <StModalBody onClick={(e) => e.stopPropagation()}>{children}</StModalBody>
@@ -22,6 +35,7 @@ const StModal = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 11;
 `;
 
 const StModalBody = styled.div`
@@ -30,4 +44,5 @@ const StModalBody = styled.div`
   height: 690px;
   background-color: ${colors.white};
   border-radius: 10px;
+  z-index: 111;
 `;
