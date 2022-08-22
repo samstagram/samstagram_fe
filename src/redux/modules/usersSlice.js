@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL, FAKE_TOKEN } from "shared/api";
+import { getCookie } from "shared/cookie";
 
 const initialState = {
   user: {},
+  isLogin: false,
   isLoading: true,
   error: null,
 };
@@ -17,7 +19,7 @@ export const __getUsers = createAsyncThunk(
         url: `${BASE_URL}/api/profiles`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${FAKE_TOKEN}`,
+          Authorization: getCookie("mycookie"),
         },
       });
       return thunkAPI.fulfillWithValue(response.data);
@@ -44,6 +46,7 @@ export const usersSlice = createSlice({
     [__getUsers.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       state.user = payload;
+      state.isLogin = getCookie("mycookie") ? true : false;
     },
     [__getUsers.rejected]: (state, { payload }) => {
       state.isLoading = false;
