@@ -8,9 +8,7 @@ const Comment = ({ comment }) => {
   console.log(content);
   return (
     <StComment>
-      <StImg>
-        <img alt='user' src={anonymous_user} />
-      </StImg>
+      <StImg alt="user" src={anonymous_user} />
       <StText>
         <StContent>
           <p>
@@ -32,13 +30,11 @@ const StComment = styled.div`
   justify-content: flex-start;
 `;
 
-const StImg = styled.div`
+const StImg = styled.img`
   width: 32px;
+  border-radius: 50%;
   margin-right: 10px;
   display: flex;
-  img {
-    width: 100%;
-  }
 `;
 
 const StText = styled.div`

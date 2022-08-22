@@ -1,69 +1,119 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Button from "components/elements/Button";
-import { colors } from "styles/theme";
-import anonymous_user from "assets/anonymous_user.jpg";
-import { useDispatch } from "react-redux";
+import Carousel from "components/Carousel";
 import { __postPosts } from "redux/modules/postsSlice";
+import anonymous_user from "assets/anonymous_user.jpg";
+import { colors } from "styles/theme";
+import { useDropzone } from "react-dropzone";
+import { IoMdImages } from "react-icons/io";
 
 const Form = ({ handleOpenModal, onChangeHandler }) => {
-  const [text, setText] = useState({
-    content: "",
-  });
+  const [text, setText] = useState({ content: "" });
+  const [files, setFiles] = useState([]);
+
+  const MAX_POSTS = 3;
+  const MAX_LENGTH = 200;
 
   const dispatch = useDispatch();
   const username = "test_samsta";
 
-  const onSubmitHandler = (text) => {
-    dispatch(__postPosts(text));
+  const onSubmitHandler = async () => {
+    if (files.length === 0) {
+      window.alert("사진을 1장 이상 선택해야 합니다.");
+    } else {
+      const formData = new FormData();
+
+      files.map((file) => formData.append("multipartFile", file));
+      formData.append(
+        "dto",
+        new Blob([JSON.stringify(text)], { type: "application/json" })
+      );
+
+      await dispatch(__postPosts(formData));
+      await handleOpenModal();
+    }
   };
 
   const handleChange = (e) => {
     const { value } = e.target;
-    const val = value.substr(0, 200);
-    setText({
-      ...text,
-      content: val,
-    });
+    const val = value.substr(0, MAX_LENGTH);
+
+    setText(val);
   };
+
+  /* DRAG & DROP -------------------------------------------------------------- */
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: {
+      "image/jpg": [".jpg"],
+      "image/jpeg": [".jpeg"],
+      "image/png": [".png"],
+    },
+    onDrop: (acceptedFiles) => {
+      acceptedFiles.length > MAX_POSTS
+        ? window.alert("사진은 3장까지 업로드할 수 있습니다.")
+        : setFiles(
+            acceptedFiles.map((file) =>
+              Object.assign(file, {
+                preview: URL.createObjectURL(file),
+              })
+            )
+          );
+    },
+  });
+
+  useEffect(() => {
+    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+  }, []);
+
+  console.log(files);
 
   return (
     <DetailContainer>
-      <form>
-        <DetailHeader>
-          <Button variant='arrow' onClickHandler={handleOpenModal} />
-          <h2>새 게시물 만들기</h2>
-
-          <Button
-            variant='text'
-            onClickHandler={() => {
-              onSubmitHandler(text);
-            }}
-          >
-            공유하기
-          </Button>
-        </DetailHeader>
-
-        <DetailBody>
-          <StImage></StImage>
-          <StContent>
-            <StUser>
-              <StImg>
-                <img alt='user' src={anonymous_user} />
-              </StImg>
-              <StName>{username}</StName>
-            </StUser>
-            <StTextarea
-              id='samsta-textarea'
-              name='content'
-              rows='12'
-              cols='30'
-              placeholder='내용을 입력해주세요 (200자 이내)'
-              onChange={handleChange}
-            ></StTextarea>
-          </StContent>
-        </DetailBody>
-      </form>
+      <DetailHeader>
+        <Button variant="arrow" onClickHandler={handleOpenModal} />
+        <h2>새 게시물 만들기</h2>
+        <Button variant="text" onClickHandler={onSubmitHandler}>
+          공유하기
+        </Button>
+      </DetailHeader>
+      <DetailBody>
+        <StImage>
+          {files.length === 0 && (
+            <section className="container">
+              <StUpload {...getRootProps({ className: "dropzone" })}>
+                <p>
+                  <IoMdImages size="60px" color={`${colors.black}`} />
+                  사진과 동영상을 여기에 끌어다 놓으세요
+                </p>
+              </StUpload>
+            </section>
+          )}
+          {files.length !== 0 && (
+            <Carousel length="640px">
+              {files.map((file) => file.preview)}
+            </Carousel>
+          )}
+        </StImage>
+        <StContent>
+          <StUser>
+            <StImg>
+              <img alt="user" src={anonymous_user} />
+            </StImg>
+            <StName>{username}</StName>
+          </StUser>
+          <StTextarea
+            id="samsta-textarea"
+            name="content"
+            rows="12"
+            cols="30"
+            value={text.content}
+            placeholder="내용을 입력해주세요 (200자 이내)"
+            onChange={handleChange}
+          ></StTextarea>
+        </StContent>
+      </DetailBody>
     </DetailContainer>
   );
 };
@@ -109,7 +159,35 @@ const DetailBody = styled.div`
 const StImage = styled.div`
   width: 640px;
   height: 640px;
-  background: pink;
+
+  section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const StUpload = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border-right: 1px solid ${colors.gray2};
+  cursor: pointer;
+
+  p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-size: 22px;
+    font-weight: 300;
+  }
 `;
 
 const StContent = styled.div`
