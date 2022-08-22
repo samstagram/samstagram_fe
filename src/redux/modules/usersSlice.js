@@ -1,19 +1,33 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASE_URL } from "shared/api";
+import { BASE_URL, FAKE_TOKEN } from "shared/api";
+import { getCookie } from "shared/cookie";
 
 const initialState = {
-  username: "",
-  useremail: "",
-  userprofile: "",
-  followingCnt: 0,
-  followersCnt: 0,
-  jwt: "",
+  user: {},
+  isLogin: false,
+  isLoading: true,
+  error: null,
 };
 
 export const __getUsers = createAsyncThunk(
   "getUsers",
-  async (payload, thunkAPI) => {}
+  async (payload, thunkAPI) => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: `${BASE_URL}/api/profiles`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: getCookie("mycookie"),
+        },
+      });
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
 );
 
 export const __postUsers = createAsyncThunk(
@@ -31,6 +45,8 @@ export const usersSlice = createSlice({
     },
     [__getUsers.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
+      state.user = payload;
+      state.isLogin = getCookie("mycookie") ? true : false;
     },
     [__getUsers.rejected]: (state, { payload }) => {
       state.isLoading = false;
@@ -47,4 +63,5 @@ export const usersSlice = createSlice({
   },
 });
 
+export const usersAction = usersSlice.actions;
 export default usersSlice;

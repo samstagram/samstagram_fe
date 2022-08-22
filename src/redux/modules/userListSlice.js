@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL, FAKE_TOKEN } from "shared/api";
+import { getCookie } from "shared/cookie";
 
 const initialState = {
   userlist: [],
@@ -17,7 +18,7 @@ export const __getUserList = createAsyncThunk(
         url: `${BASE_URL}/api/members`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${FAKE_TOKEN}`,
+          Authorization: getCookie("mycookie"),
         },
       });
       return thunkAPI.fulfillWithValue(response.data);
@@ -38,7 +39,7 @@ export const __postUserList = createAsyncThunk(
         url: `${BASE_URL}/api/members/${payload}`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${FAKE_TOKEN}`,
+          Authorization: getCookie("mycookie"),
         },
         data: payload,
       });

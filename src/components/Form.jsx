@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Button from "components/elements/Button";
 import Carousel from "components/Carousel";
@@ -8,16 +8,31 @@ import anonymous_user from "assets/anonymous_user.jpg";
 import { colors } from "styles/theme";
 import { useDropzone } from "react-dropzone";
 import { IoMdImages } from "react-icons/io";
+import { __getUsers } from "redux/modules/usersSlice";
 
 const Form = ({ handleOpenModal, onChangeHandler }) => {
   const [text, setText] = useState({ content: "" });
   const [files, setFiles] = useState([]);
 
-  const MAX_POSTS = 3;
+  const MAX_POSTS = 4;
   const MAX_LENGTH = 200;
 
   const dispatch = useDispatch();
-  const username = "test_samsta";
+
+  const { user, isLoading, error } = useSelector((state) => state.users);
+
+  const {
+    userId,
+    username,
+    useremail,
+    userprofile,
+    followersCnt,
+    followingCnt,
+  } = user;
+
+  useEffect(() => {
+    dispatch(__getUsers());
+  }, [dispatch]);
 
   const onSubmitHandler = async () => {
     if (files.length === 0) {
@@ -52,7 +67,7 @@ const Form = ({ handleOpenModal, onChangeHandler }) => {
     },
     onDrop: (acceptedFiles) => {
       acceptedFiles.length > MAX_POSTS
-        ? window.alert("사진은 3장까지 업로드할 수 있습니다.")
+        ? window.alert("사진은 4장까지 업로드할 수 있습니다.")
         : setFiles(
             acceptedFiles.map((file) =>
               Object.assign(file, {

@@ -4,26 +4,20 @@ import Button from "components/elements/Button";
 import anonymous_user from "assets/anonymous_user.jpg";
 import { colors } from "styles/theme";
 import { useDispatch } from "react-redux";
-import { __postUsers } from "redux/modules/usersSlice";
+import { usersAction, __getUsers, __postUsers } from "redux/modules/usersSlice";
 import { __postUserList } from "redux/modules/userListSlice";
 
 const UserItem = ({ user }) => {
   const dispatch = useDispatch();
-  // const user = {
-  //   memberId: 1,
-  //   username: "taemin",
-  //   useremail: "hanghae99@gmail.com",
-  //   userprofile: "url",
-  //   isFollow: false,
-  // };
 
   const { memberId, username, useremail, userprofile, isFollow } = user;
 
   const [follow, setFollow] = useState(isFollow);
 
-  const handleFollow = () => {
-    dispatch(__postUserList(memberId));
+  const handleFollow = async () => {
     setFollow(!follow);
+    await dispatch(__postUserList(memberId));
+    await dispatch(__getUsers());
   };
 
   return (

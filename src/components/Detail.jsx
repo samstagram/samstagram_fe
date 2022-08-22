@@ -5,31 +5,31 @@ import anonymous_user from "assets/anonymous_user.jpg";
 import CommentList from "components/CommentList";
 import CommentForm from "components/CommentForm";
 import Carousel from "components/Carousel";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { __getPost } from "redux/modules/postsSlice";
+import Loading from "./Loading";
 
-import instagram_05 from "assets/instagram_05.png";
-import instagram_06 from "assets/instagram_05.png";
-import instagram_07 from "assets/instagram_05.png";
-import { useSelector } from "react-redux";
+const Detail = ({ id, handleOpenModal }) => {
+  console.log("ID", id);
 
-const Detail = ({ handleOpenModal }) => {
-  const article = {
-    articlesId: 4,
-    createdAt: "2022년 08월 24일 12시 17분",
-    username: "test_samsta",
-    useremail: "sparta@gmail.com",
-    userprofile: "url",
-    isMyArticles: false,
-    commentCnt: "9",
-    image: [
-      "http://localhost:3000/80b985cc-a8e5-4838-9bea-f3761d43bf36",
-      "http://localhost:3000/8458a0c6-a957-4a91-a743-78bbfd0298ac",
-      "http://localhost:3000/9cfc53e6-9708-4594-9ea4-c40b4f8a71ec",
-    ],
-  };
+  const dispatch = useDispatch();
+  // const article = {
+  //   articlesId: 4,
+  //   createdAt: "2022년 08월 24일 12시 17분",
+  //   username: "test_samsta",
+  //   useremail: "sparta@gmail.com",
+  //   userprofile: "url",
+  //   isMyArticles: false,
+  //   commentCnt: "9",
+  //   image: [
+  //     "http://localhost:3000/80b985cc-a8e5-4838-9bea-f3761d43bf36",
+  //     "http://localhost:3000/8458a0c6-a957-4a91-a743-78bbfd0298ac",
+  //     "http://localhost:3000/9cfc53e6-9708-4594-9ea4-c40b4f8a71ec",
+  //   ],
+  // };
 
-  const res = useSelector((state) => state.posts);
-
-  console.log(res);
+  const { post, isLoading, error } = useSelector((state) => state.posts);
 
   const {
     articlesId,
@@ -40,28 +40,45 @@ const Detail = ({ handleOpenModal }) => {
     isMyArticles,
     commentCnt,
     image,
-  } = article;
+  } = post;
+
+  // console.log(post);
+  // dispatch(__getPost(id));
+
+  useEffect(() => {
+    console.log("USEEFFECT!!!!!!!!!!!!!!!!!");
+    dispatch(__getPost(id));
+    console.log(id);
+  }, [dispatch]);
+
+  // if (isLoading) return <Loading />;
 
   return (
-    <DetailContainer>
-      <DetailHeader>
-        <Button variant='arrow' onClickHandler={handleOpenModal} />
-        {isMyArticles && <Button variant='text'>삭제하기</Button>}
-      </DetailHeader>
-      <DetailBody>
-        <StImage>
-          <Carousel length='640px'>{image}</Carousel>
-        </StImage>
-        <StContent>
-          <StUser>
-            <StImg alt='user' src={anonymous_user} />
-            <StName>{username}</StName>
-          </StUser>
-          <CommentList />
-          <CommentForm />
-        </StContent>
-      </DetailBody>
-    </DetailContainer>
+    <>
+      {isLoading ? (
+        <div></div>
+      ) : (
+        <DetailContainer>
+          <DetailHeader>
+            <Button variant="arrow" onClickHandler={handleOpenModal} />
+            {isMyArticles && <Button variant="text">삭제하기</Button>}
+          </DetailHeader>
+          <DetailBody>
+            <StImage>
+              <Carousel length="640px">{image}</Carousel>
+            </StImage>
+            <StContent>
+              <StUser>
+                <StImg alt="user" src={anonymous_user} />
+                <StName>{username}</StName>
+              </StUser>
+              <CommentList />
+              <CommentForm />
+            </StContent>
+          </DetailBody>
+        </DetailContainer>
+      )}
+    </>
   );
 };
 

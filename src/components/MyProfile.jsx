@@ -2,16 +2,32 @@ import styled from "styled-components";
 import anonymous_user from "assets/anonymous_user.jpg";
 import Button from "components/elements/Button";
 import { colors } from "styles/theme";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { __getUsers } from "redux/modules/usersSlice";
+import { getCookie, removeCookie } from "shared/cookie";
+import { useNavigate } from "react-router-dom";
 
 const MyProfile = () => {
-  const user = {
-    userId: 1,
-    username: "test_samsta",
-    useremail: "sparta@gmail.com",
-    userprofile: "url",
-    followingCnt: "4",
-    followersCnt: "2",
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user, isLogin, isLoading, error } = useSelector(
+    (state) => state.users
+  );
+
+  useEffect(() => {
+    dispatch(__getUsers());
+  }, [dispatch]);
+
+  // const user = {
+  //   userId: 1,
+  //   username: "test_samsta",
+  //   useremail: "sparta@gmail.com",
+  //   userprofile: "url",
+  //   followingCnt: "4",
+  //   followersCnt: "2",
+  // };
 
   const {
     userId,
@@ -22,14 +38,16 @@ const MyProfile = () => {
     followingCnt,
   } = user;
 
-  const handleSignout = () => {
+  const handleSignout = async () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
-      console.log("로그아웃 되었습니다.");
+      removeCookie("mycookie");
       window.alert("로그아웃 되었습니다.");
+      (await !getCookie("mycookie")) && (await navigate("/"));
     } else {
       console.log("취소되었습니다.");
     }
   };
+
   return (
     <StProfile>
       <ProfileContainer>

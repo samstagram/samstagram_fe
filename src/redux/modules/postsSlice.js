@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL, FAKE_TOKEN } from "shared/api";
+import { getCookie } from "shared/cookie";
 
 const initialState = {
   posts: [],
@@ -16,10 +17,9 @@ export const __getPosts = createAsyncThunk(
       const response = await axios({
         method: "get",
         url: `${BASE_URL}/api/articles?page=1&size=10`,
-        // url: `http://localhost:3001/articles`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${FAKE_TOKEN}`,
+          Authorization: getCookie("mycookie"),
         },
       });
       console.log(response.data);
@@ -42,7 +42,7 @@ export const __postPosts = createAsyncThunk(
         headers: {
           "Content-Type": "multipart/form-data",
           responseType: "blob",
-          Authorization: `Bearer ${FAKE_TOKEN}`,
+          Authorization: getCookie("mycookie"),
         },
         data: payload,
       });
@@ -65,10 +65,33 @@ export const __deletePosts = createAsyncThunk(
         url: `${BASE_URL}/api/articles/${payload}`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${FAKE_TOKEN}`,
+          Authorization: getCookie("mycookie"),
         },
       });
       return thunkAPI.fulfillWithValue(payload);
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const __getPost = createAsyncThunk(
+  "getPost",
+  async (payload, thunkAPI) => {
+    console.log("GETPOST", payload);
+    try {
+      const response = await axios({
+        method: "get",
+        url: `${BASE_URL}/api/articles/${payload}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: getCookie("mycookie"),
+        },
+      });
+      console.log("PAYLOAD", payload);
+      console.log("GET POST", response);
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       console.log(error);
       return thunkAPI.rejectWithValue(error);
@@ -111,6 +134,18 @@ export const postsSlice = createSlice({
       state.posts = state.posts.filter((item) => item.articlesId !== payload);
     },
     [__deletePosts.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.error = payload;
+    },
+    [__getPost.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [__getPost.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.post = payload;
+      console.log("STATE", state.post);
+    },
+    [__getPost.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
     },

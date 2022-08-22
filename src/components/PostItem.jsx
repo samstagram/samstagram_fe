@@ -2,42 +2,39 @@ import styled from "styled-components";
 import anonymous_user from "assets/anonymous_user.jpg";
 import { colors } from "styles/theme";
 import Button from "components/elements/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "components/layout/Modal";
 import Detail from "components/Detail";
 import Carousel from "components/Carousel";
-
-import instagram_05 from "assets/instagram_05.png";
-import instagram_06 from "assets/instagram_05.png";
-import instagram_07 from "assets/instagram_05.png";
 import { useDispatch, useSelector } from "react-redux";
-import { __deletePosts } from "redux/modules/postsSlice";
+import { __deletePosts, __getPost, __getPosts } from "redux/modules/postsSlice";
 
-const PostItem = ({ post }) => {
+const PostItem = ({ postVal }) => {
   const dispatch = useDispatch();
 
+  const [it, setId] = useState(0);
   const [open, setOpen] = useState(false);
 
-  console.log(post);
+  // console.log(post);
 
-  const item = {
-    articlesId: 4,
-    createdAt: "2022년 08월 24일 12시 17분",
-    username: "test_samsta",
-    useremail: "sparta@gmail.com",
-    userprofile: "url",
-    content:
-      "잊지마 넌 흐린 어둠 사이 왼손으로 그린 별 하나 보이니 그 유일함이 얼마나 아름다운지 말야 넌 모르지 아직 못다 핀 널 위해 쓰여진 오래된 사랑시 헤매도 좋으니 웃음 짓게 되길. 잊지마 넌 흐린 어둠 사이 왼손으로 그린 별 하나 보이니 그 유일함이 얼마나 아름다운지 말야 넌 모르지 아직 못다 핀 널 위해 쓰여진 오래된 사랑시 헤매도 좋으니 웃음 짓게 되길", // "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type",
-    isMyArticles: true,
-    image: [
-      "blob:http://localhost:3000/80b985cc-a8e5-4838-9bea-f3761d43bf36",
-      "blob:http://localhost:3000/8458a0c6-a957-4a91-a743-78bbfd0298ac",
-      "blob:http://localhost:3000/9cfc53e6-9708-4594-9ea4-c40b4f8a71ec",
-    ],
-    isLike: false,
-    likeCnt: "5,024",
-    commentCnt: "12",
-  };
+  // const item = {
+  //   articlesId: 4,
+  //   createdAt: "2022년 08월 24일 12시 17분",
+  //   username: "test_samsta",
+  //   useremail: "sparta@gmail.com",
+  //   userprofile: "url",
+  //   content:
+  //     "잊지마 넌 흐린 어둠 사이 왼손으로 그린 별 하나 보이니 그 유일함이 얼마나 아름다운지 말야 넌 모르지 아직 못다 핀 널 위해 쓰여진 오래된 사랑시 헤매도 좋으니 웃음 짓게 되길. 잊지마 넌 흐린 어둠 사이 왼손으로 그린 별 하나 보이니 그 유일함이 얼마나 아름다운지 말야 넌 모르지 아직 못다 핀 널 위해 쓰여진 오래된 사랑시 헤매도 좋으니 웃음 짓게 되길", // "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type",
+  //   isMyArticles: true,
+  //   image: [
+  //     "blob:http://localhost:3000/80b985cc-a8e5-4838-9bea-f3761d43bf36",
+  //     "blob:http://localhost:3000/8458a0c6-a957-4a91-a743-78bbfd0298ac",
+  //     "blob:http://localhost:3000/9cfc53e6-9708-4594-9ea4-c40b4f8a71ec",
+  //   ],
+  //   isLike: false,
+  //   likeCnt: "5,024",
+  //   commentCnt: "12",
+  // };
 
   const {
     articlesId,
@@ -51,12 +48,11 @@ const PostItem = ({ post }) => {
     isLike,
     likeCnt,
     commentCnt,
-  } = post;
+  } = postVal;
 
   const [like, setLike] = useState(isLike);
 
   const handleDelete = (e) => {
-    console.log(e);
     if (window.confirm("삭제하시겠습니까?")) {
       e.stopPropagation();
       dispatch(__deletePosts(articlesId));
@@ -66,9 +62,29 @@ const PostItem = ({ post }) => {
     }
   };
 
-  // const imgArr = [instagram_05, instagram_06, instagram_07];
+  const handleOpen = (articlesId) => {
+    setId(articlesId);
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
 
   const hashtagRegExp = /#[^\s]+/g;
+
+  /* HASHTAG SEARCH ----------------------------------------------------------- */
+  const handleClickHashtag = (e) => {
+    const target = e.target.innerText;
+    console.log(target);
+  };
+
+  const handleOpenDetail = () => {
+    // dispatch(__getPost(articlesId));
+    setOpen(true);
+  };
+
+  const { post, isLoading, error } = useSelector((state) => state.posts);
+
+  console.log("POSTITEM", post);
+  console.log("OPEN", open);
 
   return (
     <StPostItem>
@@ -92,17 +108,15 @@ const PostItem = ({ post }) => {
           />
           <Button
             variant="comment"
-            onClickHandler={() => {
-              setOpen(!open);
-            }}
+            onClickHandler={() => handleOpen(articlesId)}
           />
           {open && (
             <Modal
               handleOpenModal={() => {
-                setOpen(!open);
+                setOpen(false);
               }}
             >
-              <Detail handleOpenModal={() => setOpen(!open)} />
+              <Detail id={articlesId} handleOpenModal={() => setOpen(false)} />
             </Modal>
           )}
         </BtnContainer>
@@ -116,12 +130,13 @@ const PostItem = ({ post }) => {
             <Stname>{username}</Stname>
             {content.split(/(#[^\s]+)/g).map((val, index) =>
               hashtagRegExp.test(val) ? (
-                <span
+                <HashtagText
+                  onClick={handleClickHashtag}
                   key={`${val}-${index}`}
                   style={{ color: `${colors.blue}` }}
                 >
                   {val}
-                </span>
+                </HashtagText>
               ) : (
                 <span key={`${val}-${index}`}>{val}</span>
               )
@@ -232,5 +247,9 @@ const StComment = styled.div`
   margin-top: 8px;
   color: ${colors.gray1};
   font-size: 12px;
+  cursor: pointer;
+`;
+
+const HashtagText = styled.span`
   cursor: pointer;
 `;

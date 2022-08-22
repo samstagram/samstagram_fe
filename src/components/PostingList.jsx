@@ -1,7 +1,7 @@
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import PostItem from "components/PostItem";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { __getPosts } from "redux/modules/postsSlice";
 import Loading from "components/Loading";
 
@@ -9,7 +9,7 @@ const PostingList = () => {
   const dispatch = useDispatch();
 
   const { posts, isLoading } = useSelector((state) => state.posts);
-  console.log(posts);
+  // console.log(posts);
 
   useEffect(() => {
     dispatch(__getPosts());
@@ -29,8 +29,10 @@ const PostingList = () => {
             </EmptyContainer>
           ) : (
             <>
-              {posts.map((post) => (
-                <PostItem post={post} key={post.articlesId} />
+              {posts?.map((post) => (
+                <React.Fragment key={post.articlesId}>
+                  <PostItem postVal={post} />
+                </React.Fragment>
               ))}
             </>
           )}
