@@ -16,6 +16,9 @@ const CommentForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(__postComments(comment));
+    setComment({
+      content: "",
+    });
   };
 
   const handleChange = (e) => {

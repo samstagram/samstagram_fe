@@ -3,7 +3,6 @@ import anonymous_user from "assets/anonymous_user.jpg";
 import { colors } from "styles/theme";
 
 const Comment = (props) => {
-  console.log(props.content.content);
   return (
     <StComment>
       <StImg alt="user" src={anonymous_user} />
