@@ -9,6 +9,7 @@ import Carousel from "components/Carousel";
 import instagram_05 from "assets/instagram_05.png";
 import instagram_06 from "assets/instagram_05.png";
 import instagram_07 from "assets/instagram_05.png";
+import { useSelector } from "react-redux";
 
 const Detail = ({ handleOpenModal }) => {
   const article = {
@@ -25,6 +26,10 @@ const Detail = ({ handleOpenModal }) => {
       "http://localhost:3000/9cfc53e6-9708-4594-9ea4-c40b4f8a71ec",
     ],
   };
+
+  const res = useSelector((state) => state.posts);
+
+  console.log(res);
 
   const {
     articlesId,

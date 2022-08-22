@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASE_URL, FAKE_TOKEN } from "shared/api";
 
 const initialState = {
   posts: [],
@@ -14,10 +15,11 @@ export const __getPosts = createAsyncThunk(
     try {
       const response = await axios({
         method: "get",
-        url: "http://15.165.160.40/api/articles?page=1&size=10",
+        url: `${BASE_URL}/api/articles?page=1&size=10`,
+        // url: `http://localhost:3001/articles`,
         headers: {
           "Content-Type": "application/json",
-          // Authorization: 'cookie'
+          Authorization: `Bearer ${FAKE_TOKEN}`,
         },
       });
       console.log(response.data);
@@ -32,16 +34,45 @@ export const __getPosts = createAsyncThunk(
 export const __postPosts = createAsyncThunk(
   "postPosts",
   async (payload, thunkAPI) => {
-    const data = await axios.post("http://localhost:3001/posts", payload);
-    return data.data;
+    console.log(payload);
+    try {
+      const response = await axios({
+        method: "post",
+        url: `${BASE_URL}/api/articles`,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          responseType: "blob",
+          Authorization: `Bearer ${FAKE_TOKEN}`,
+        },
+        data: payload,
+      });
+      console.log(response.data);
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error);
+    }
   }
 );
 
 export const __deletePosts = createAsyncThunk(
   "deletePosts",
   async (payload, thunkAPI) => {
-    await axios.delete(`http://localhost:3001/posts/${payload}`);
-    return payload;
+    console.log(payload);
+    try {
+      await axios({
+        method: "delete",
+        url: `${BASE_URL}/api/articles/${payload}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${FAKE_TOKEN}`,
+        },
+      });
+      return thunkAPI.fulfillWithValue(payload);
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error);
+    }
   }
 );
 
@@ -59,28 +90,29 @@ export const postsSlice = createSlice({
     },
     [__getPosts.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      state.posts = payload;
+      state.error = payload;
     },
     [__postPosts.pending]: (state) => {
       state.isLoading = true;
     },
     [__postPosts.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      state.posts = [...state.posts, payload];
+      state.posts.unshift(payload);
     },
     [__postPosts.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      state.posts = payload;
+      state.error = payload;
     },
-    [__deletePosts.pending]: (state, action) => {
+    [__deletePosts.pending]: (state) => {
       state.isLoading = true;
     },
-    [__deletePosts.fulfilled]: (state, action) => {
-      state.posts = state.posts.filter((item) => item.id !== action.payload);
-    },
-    [__deletePosts.rejected]: (state, action) => {
+    [__deletePosts.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      state.error = action.payload;
+      state.posts = state.posts.filter((item) => item.articlesId !== payload);
+    },
+    [__deletePosts.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.error = payload;
     },
   },
 });

@@ -1,45 +1,50 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Button from "components/elements/Button";
-import { colors } from "styles/theme";
-import anonymous_user from "assets/anonymous_user.jpg";
 import Carousel from "components/Carousel";
+import { __postPosts } from "redux/modules/postsSlice";
+import anonymous_user from "assets/anonymous_user.jpg";
+import { colors } from "styles/theme";
 import { useDropzone } from "react-dropzone";
 import { IoMdImages } from "react-icons/io";
-import instagram_05 from "assets/instagram_05.png";
-import instagram_06 from "assets/instagram_05.png";
-import instagram_07 from "assets/instagram_05.png";
-import { useDispatch } from "react-redux";
-import { __postPosts } from "redux/modules/postsSlice";
 
 const Form = ({ handleOpenModal, onChangeHandler }) => {
-  const [text, setText] = useState({
-    content: "",
-  });
+  const [text, setText] = useState({ content: "" });
   const [files, setFiles] = useState([]);
 
   const MAX_POSTS = 3;
+  const MAX_LENGTH = 200;
+
   const dispatch = useDispatch();
   const username = "test_samsta";
 
-  const onSubmitHandler = (text) => {
-    dispatch(__postPosts(text));
+  const onSubmitHandler = async () => {
+    if (files.length === 0) {
+      window.alert("사진을 1장 이상 선택해야 합니다.");
+    } else {
+      const formData = new FormData();
+
+      files.map((file) => formData.append("multipartFile", file));
+      formData.append(
+        "dto",
+        new Blob([JSON.stringify(text)], { type: "application/json" })
+      );
+
+      await dispatch(__postPosts(formData));
+      await handleOpenModal();
+    }
   };
 
   const handleChange = (e) => {
     const { value } = e.target;
-    const val = value.substr(0, 200);
-    setText({
-      ...text,
-      content: val,
-    });
+    const val = value.substr(0, MAX_LENGTH);
+
+    setText(val);
   };
 
-  // const imgArr = [instagram_05, instagram_06, instagram_07];
-
-  /* DROPZONE ----------------------------------------------------------------- */
+  /* DRAG & DROP -------------------------------------------------------------- */
   const { getRootProps, getInputProps } = useDropzone({
-    maxFiles: MAX_POSTS,
     accept: {
       "image/jpg": [".jpg"],
       "image/jpeg": [".jpeg"],
@@ -58,37 +63,20 @@ const Form = ({ handleOpenModal, onChangeHandler }) => {
     },
   });
 
-  console.log(files);
-
-  // const thumbs = files.map((file) => (
-  //   <div style={thumb} key={file.name}>
-  //     <div style={thumbInner}>
-  //       <img
-  //         alt="drag&amp;drop"
-  //         src={file.preview}
-  //         style={img}
-  //         // Revoke data uri after image is loaded
-  //         onLoad={() => {
-  //           URL.revokeObjectURL(file.preview);
-  //         }}
-  //       />
-  //     </div>
-  //   </div>
-  // ));
-
   useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, []);
 
-  // console.log(files);
+  console.log(files);
 
   return (
     <DetailContainer>
       <DetailHeader>
         <Button variant="arrow" onClickHandler={handleOpenModal} />
         <h2>새 게시물 만들기</h2>
-        <Button variant="text">공유하기</Button>
+        <Button variant="text" onClickHandler={onSubmitHandler}>
+          공유하기
+        </Button>
       </DetailHeader>
       <DetailBody>
         <StImage>
@@ -120,7 +108,7 @@ const Form = ({ handleOpenModal, onChangeHandler }) => {
             name="content"
             rows="12"
             cols="30"
-            value={text}
+            value={text.content}
             placeholder="내용을 입력해주세요 (200자 이내)"
             onChange={handleChange}
           ></StTextarea>

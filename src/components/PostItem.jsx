@@ -10,13 +10,15 @@ import Carousel from "components/Carousel";
 import instagram_05 from "assets/instagram_05.png";
 import instagram_06 from "assets/instagram_05.png";
 import instagram_07 from "assets/instagram_05.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { __deletePosts } from "redux/modules/postsSlice";
 
-const PostItem = (props) => {
+const PostItem = ({ post }) => {
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
+
+  console.log(post);
 
   const item = {
     articlesId: 4,
@@ -54,16 +56,19 @@ const PostItem = (props) => {
   const [like, setLike] = useState(isLike);
 
   const handleDelete = (e) => {
+    console.log(e);
     if (window.confirm("삭제하시겠습니까?")) {
       e.stopPropagation();
-      dispatch(__deletePosts(props.post.id));
+      dispatch(__deletePosts(articlesId));
       window.alert("삭제되었습니다.");
     } else {
       console.log("취소되었습니다.");
     }
   };
 
-  const imgArr = [instagram_05, instagram_06, instagram_07];
+  // const imgArr = [instagram_05, instagram_06, instagram_07];
+
+  const hashtagRegExp = /#[^\s]+/g;
 
   return (
     <StPostItem>
@@ -109,7 +114,18 @@ const PostItem = (props) => {
         <ContentContainer>
           <StText>
             <Stname>{username}</Stname>
-            {props.post.content}
+            {content.split(/(#[^\s]+)/g).map((val, index) =>
+              hashtagRegExp.test(val) ? (
+                <span
+                  key={`${val}-${index}`}
+                  style={{ color: `${colors.blue}` }}
+                >
+                  {val}
+                </span>
+              ) : (
+                <span key={`${val}-${index}`}>{val}</span>
+              )
+            )}
           </StText>
           <StTime>{createdAt}</StTime>
           <StComment onClick={() => console.log("COMMENT CLICKED!")}>
@@ -198,11 +214,13 @@ const ContentContainer = styled.div`
 
 const Stname = styled.span`
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 4px;
   font-weight: 600;
 `;
 
-const StText = styled.p``;
+const StText = styled.p`
+  white-space: pre-wrap;
+`;
 
 const StTime = styled.div`
   margin-top: 8px;

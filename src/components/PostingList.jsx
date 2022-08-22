@@ -18,12 +18,22 @@ const PostingList = () => {
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <EmptyContainer>
+          <Loading />
+        </EmptyContainer>
       ) : (
         <StPostingList>
-          {posts.map((post) => (
-            <PostItem post={post} />
-          ))}
+          {posts.length === 0 ? (
+            <EmptyContainer>
+              <span>There is no post.</span>
+            </EmptyContainer>
+          ) : (
+            <>
+              {posts.map((post) => (
+                <PostItem post={post} key={post.articlesId} />
+              ))}
+            </>
+          )}
         </StPostingList>
       )}
     </>
@@ -37,4 +47,17 @@ const StPostingList = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 12px;
+`;
+
+const EmptyContainer = styled.div`
+  width: 470px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    font-size: 24px;
+    font-weight: 600;
+  }
 `;
