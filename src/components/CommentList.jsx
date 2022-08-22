@@ -10,46 +10,47 @@ import { useEffect } from "react";
 const CommentList = () => {
   const dispatch = useDispatch();
 
-  // const commentList = useSelector((state) => state.commentsSlice);
+  const commentList = useSelector((state) => state.comments.comments);
 
-  // console.log(commentList);
-  // useEffect(() => {
-  //   dispatch(__getComments());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(__getComments());
+  }, [dispatch]);
 
-  const commentList = [
-    {
-      commentsId: 3,
-      createdAt: "2022년 08월 23일 17시 54분",
-      username: "유형엽",
-      useremail: "you@gmail.com",
-      userprofile: "url",
-      content: "좋은 하루 보내세요",
-    },
-    {
-      commentsId: 2,
-      createdAt: "2022년 08월 23일 16시 45분",
-      username: "정성일",
-      useremail: "sung1@gmail.com",
-      userprofile: "url",
-      content: "방가와용",
-    },
-    {
-      commentsId: 1,
-      createdAt: "2022년 08월 22일 17시 54분",
-      username: "이태민",
-      useremail: "sparta@gmail.com",
-      userprofile: "url",
-      content: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-    },
-  ];
+  // [
+  //   {
+  //     commentsId: 3,
+  //     createdAt: "2022년 08월 23일 17시 54분",
+  //     username: "유형엽",
+  //     useremail: "you@gmail.com",
+  //     userprofile: "url",
+  //     content: "좋은 하루 보내세요",
+  //   },
+  //   {
+  //     commentsId: 2,
+  //     createdAt: "2022년 08월 23일 16시 45분",
+  //     username: "정성일",
+  //     useremail: "sung1@gmail.com",
+  //     userprofile: "url",
+  //     content: "방가와용",
+  //   },
+  //   {
+  //     commentsId: 1,
+  //     createdAt: "2022년 08월 22일 17시 54분",
+  //     username: "이태민",
+  //     useremail: "sparta@gmail.com",
+  //     userprofile: "url",
+  //     content: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
+  //   },
+  // ];
 
   return (
-    <StCommentList>
-      {commentList?.map((val) => (
-        <Comment key={val.commentsId} comment={val} />
-      ))}
-    </StCommentList>
+    <div>
+      <StCommentList>
+        {commentList?.map((comment) => (
+          <Comment key={comment.id} content={comment} />
+        ))}
+      </StCommentList>
+    </div>
   );
 };
 

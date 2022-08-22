@@ -45,16 +45,16 @@ const Detail = ({ handleOpenModal }) => {
   return (
     <DetailContainer>
       <DetailHeader>
-        <Button variant="arrow" onClickHandler={handleOpenModal} />
-        {isMyArticles && <Button variant="text">삭제하기</Button>}
+        <Button variant='arrow' onClickHandler={handleOpenModal} />
+        {isMyArticles && <Button variant='text'>삭제하기</Button>}
       </DetailHeader>
       <DetailBody>
         <StImage>
-          <Carousel length="640px">{image}</Carousel>
+          <Carousel length='640px'>{image}</Carousel>
         </StImage>
         <StContent>
           <StUser>
-            <StImg alt="user" src={anonymous_user} />
+            <StImg alt='user' src={anonymous_user} />
             <StName>{username}</StName>
           </StUser>
           <CommentList />
