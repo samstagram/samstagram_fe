@@ -2,16 +2,29 @@ import styled from "styled-components";
 import anonymous_user from "assets/anonymous_user.jpg";
 import Button from "components/elements/Button";
 import { colors } from "styles/theme";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { __getUsers } from "redux/modules/usersSlice";
 
 const MyProfile = () => {
-  const user = {
-    userId: 1,
-    username: "test_samsta",
-    useremail: "sparta@gmail.com",
-    userprofile: "url",
-    followingCnt: "4",
-    followersCnt: "2",
-  };
+  const dispatch = useDispatch();
+
+  const { user, isLoading, error } = useSelector((state) => state.users);
+
+  console.log(user);
+
+  useEffect(() => {
+    dispatch(__getUsers());
+  }, [dispatch]);
+
+  // const user = {
+  //   userId: 1,
+  //   username: "test_samsta",
+  //   useremail: "sparta@gmail.com",
+  //   userprofile: "url",
+  //   followingCnt: "4",
+  //   followersCnt: "2",
+  // };
 
   const {
     userId,
@@ -30,6 +43,7 @@ const MyProfile = () => {
       console.log("취소되었습니다.");
     }
   };
+
   return (
     <StProfile>
       <ProfileContainer>
