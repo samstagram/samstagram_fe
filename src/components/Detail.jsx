@@ -140,6 +140,5 @@ const StName = styled.div`
 `;
 
 const StCommentList = styled.div`
-  /* flex-grow: 1; */
   border-bottom: 1px solid ${colors.gray2};
 `;
