@@ -4,14 +4,13 @@ import styled from "styled-components";
 import Button from "components/elements/Button";
 import Carousel from "components/Carousel";
 import { __postPosts } from "redux/modules/postsSlice";
-import anonymous_user from "assets/anonymous_user.jpg";
 import { colors } from "styles/theme";
 import { useDropzone } from "react-dropzone";
 import { IoMdImages } from "react-icons/io";
 import { __getUsers } from "redux/modules/usersSlice";
 
-const Form = ({ handleOpenModal, onChangeHandler }) => {
-  const [text, setText] = useState({ content: "" });
+const Form = ({ handleOpenModal }) => {
+  const [text, setText] = useState({ content: " " });
   const [files, setFiles] = useState([]);
 
   const MAX_POSTS = 4;
@@ -55,7 +54,7 @@ const Form = ({ handleOpenModal, onChangeHandler }) => {
     const { value } = e.target;
     const val = value.substr(0, MAX_LENGTH);
 
-    setText(val);
+    setText({ content: val });
   };
 
   /* DRAG & DROP -------------------------------------------------------------- */

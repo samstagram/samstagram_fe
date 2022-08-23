@@ -22,10 +22,8 @@ export const __getComments = createAsyncThunk(
           Authorization: getCookie("mycookie"),
         },
       });
-      console.log("GETCOMMENTS RESPONSE", response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log("GETCOMMENTS ERROR", error);
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -45,10 +43,8 @@ export const __postComments = createAsyncThunk(
         },
         data: { content: payload.content },
       });
-      console.log("POSTCOMMENTS RESPONSE", response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }
