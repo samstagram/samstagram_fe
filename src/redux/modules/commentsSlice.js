@@ -1,8 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASE_URL } from "shared/api";
+import { getCookie } from "shared/cookie";
 
 const initialState = {
-  comments: [],
+  articlesId: null,
+  commentsList: [],
   isLoading: false,
   error: null,
 };
@@ -11,9 +14,18 @@ export const __getComments = createAsyncThunk(
   "getComments",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.get("http://localhost:3001/comments");
-      return thunkAPI.fulfillWithValue(data.data);
+      const response = await axios({
+        method: "get",
+        url: `${BASE_URL}/api/comments/${payload}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: getCookie("mycookie"),
+        },
+      });
+      console.log("GETCOMMENTS RESPONSE", response);
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
+      console.log("GETCOMMENTS ERROR", error);
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -22,8 +34,23 @@ export const __getComments = createAsyncThunk(
 export const __postComments = createAsyncThunk(
   "postComments",
   async (payload, thunkAPI) => {
-    const data = await axios.post("http://localhost:3001/comments", payload);
-    return data.data;
+    console.log(payload);
+    try {
+      const response = await axios({
+        method: "post",
+        url: `${BASE_URL}/api/comments/${payload.articlesId}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: getCookie("mycookie"),
+        },
+        data: { content: payload.content },
+      });
+      console.log("POSTCOMMENTS RESPONSE", response.data);
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error);
+    }
   }
 );
 
@@ -37,18 +64,18 @@ export const commentsSlice = createSlice({
     },
     [__getComments.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      state.comments = payload;
+      state.commentsList = payload.commentsList;
     },
     [__getComments.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      state.comments = payload;
+      state.error = payload;
     },
     [__postComments.pending]: (state) => {
       state.isLoading = true;
     },
     [__postComments.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      state.comments = [...state.comments, payload];
+      state.commentsList.unshift(payload);
     },
     [__postComments.rejected]: (state, { payload }) => {
       state.isLoading = false;

@@ -1,19 +1,20 @@
 import styled from "styled-components";
-import anonymous_user from "assets/anonymous_user.jpg";
 import { colors } from "styles/theme";
 
-const Comment = (props) => {
+const Comment = ({ comment }) => {
+  const { userprofile, username, content, createdAt } = comment;
+
   return (
     <StComment>
-      <StImg alt="user" src={anonymous_user} />
+      <StImg alt="user" src={userprofile} />
       <StText>
         <StContent>
           <p>
-            <span>test_samsta</span>
-            {props.content.content}
+            <span>{username}</span>
+            {content}
           </p>
         </StContent>
-        <StTime>날짜</StTime>
+        <StTime>{createdAt}</StTime>
       </StText>
     </StComment>
   );
@@ -28,10 +29,12 @@ const StComment = styled.div`
 `;
 
 const StImg = styled.img`
+  display: flex;
   width: 32px;
+  height: 32px;
   border-radius: 50%;
   margin-right: 10px;
-  display: flex;
+  object-fit: cover;
 `;
 
 const StText = styled.div`

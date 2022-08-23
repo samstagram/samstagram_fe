@@ -1,69 +1,61 @@
 import styled from "styled-components";
 import Comment from "./Comment";
-import Input from "./elements/Input";
-import Button from "components/elements/Button";
 import { colors } from "styles/theme";
 import { useDispatch, useSelector } from "react-redux";
 import { __getComments } from "redux/modules/commentsSlice";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
-const CommentList = () => {
+const CommentList = ({ id }) => {
   const dispatch = useDispatch();
 
-  const commentList = useSelector((state) => state.comments.comments);
+  const { articlesId, commentsList, isLoading, error } = useSelector(
+    (state) => state.comments
+  );
 
   useEffect(() => {
-    dispatch(__getComments());
-  }, [dispatch]);
-
-  // [
-  //   {
-  //     commentsId: 3,
-  //     createdAt: "2022년 08월 23일 17시 54분",
-  //     username: "유형엽",
-  //     useremail: "you@gmail.com",
-  //     userprofile: "url",
-  //     content: "좋은 하루 보내세요",
-  //   },
-  //   {
-  //     commentsId: 2,
-  //     createdAt: "2022년 08월 23일 16시 45분",
-  //     username: "정성일",
-  //     useremail: "sung1@gmail.com",
-  //     userprofile: "url",
-  //     content: "방가와용",
-  //   },
-  //   {
-  //     commentsId: 1,
-  //     createdAt: "2022년 08월 22일 17시 54분",
-  //     username: "이태민",
-  //     useremail: "sparta@gmail.com",
-  //     userprofile: "url",
-  //     content: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-  //   },
-  // ];
+    dispatch(__getComments(id));
+  }, [dispatch, id]);
 
   return (
-    <div>
-      <StCommentList>
-        {commentList?.map((comment) => (
-          <Comment key={comment.id} content={comment} />
+    <StCommentList>
+      <ul className="scroll scrollbar">
+        {commentsList?.map((comment) => (
+          <li key={comment.commentsId}>
+            <Comment comment={comment} />
+          </li>
         ))}
-      </StCommentList>
-    </div>
+      </ul>
+    </StCommentList>
   );
 };
 
 export default CommentList;
 
 const StCommentList = styled.div`
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  border-top: 1px solid ${colors.gray2};
-  border-bottom: 1px solid ${colors.gray2};
-  padding: 8px;
-  padding-left: 12px;
-  gap: 4px;
+  .scroll {
+    height: 530px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-top: 1px solid ${colors.gray2};
+    padding: 8px;
+    padding-left: 12px;
+    gap: 4px;
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  // scrollbar style
+  .scrollbar::-webkit-scrollbar-thumb {
+    background-color: ${colors.gray2};
+    border-radius: 10px;
+  }
+
+  // scrollbar background
+  .scrollbar::-webkit-scrollbar-track {
+    background-color: ${colors.gray_bg};
+  }
 `;
