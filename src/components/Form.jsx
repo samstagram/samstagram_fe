@@ -114,7 +114,7 @@ const Form = ({ handleOpenModal, onChangeHandler }) => {
         <StContent>
           <StUser>
             <StImg>
-              <img alt="user" src={anonymous_user} />
+              <img alt="user" src={userprofile} referrerPolicy="no-referrer" />
             </StImg>
             <StName>{username}</StName>
           </StUser>
@@ -227,6 +227,7 @@ const StImg = styled.div`
   img {
     width: 100%;
     border-radius: 50%;
+    object-
   }
 `;
 

@@ -22,7 +22,11 @@ const UserItem = ({ user }) => {
 
   return (
     <StProfile follow={follow}>
-      <img alt="user" src={anonymous_user} />
+      <img
+        alt="user"
+        src={userprofile ? userprofile : anonymous_user}
+        referrerPolicy="no-referrer"
+      />
       <NameContainer>
         <StName>{username}</StName>
         <StEmail>{useremail}</StEmail>
@@ -44,8 +48,10 @@ const StProfile = styled.li`
 
   img {
     width: 32px;
+    height: 32px;
     border-radius: 50%;
     margin-right: 24px;
+    object-fit: cover;
   }
 
   button {
