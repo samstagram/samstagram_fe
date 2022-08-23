@@ -18,7 +18,7 @@ const Carousel = ({ children, length }) => {
   return (
     <StCarousel>
       <Slider {...settings}>
-        {children.map((val) => {
+        {children?.map((val) => {
           // console.log("CAROUSEL", val);
           return (
             <StImg key={val} length={length}>
