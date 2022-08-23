@@ -2,39 +2,15 @@ import styled from "styled-components";
 import anonymous_user from "assets/anonymous_user.jpg";
 import { colors } from "styles/theme";
 import Button from "components/elements/Button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "components/layout/Modal";
 import Detail from "components/Detail";
 import Carousel from "components/Carousel";
-import { useDispatch, useSelector } from "react-redux";
-import { __deletePosts, __getPost, __getPosts } from "redux/modules/postsSlice";
+import { useDispatch } from "react-redux";
+import { __deletePosts } from "redux/modules/postsSlice";
 
 const PostItem = ({ postVal }) => {
   const dispatch = useDispatch();
-
-  const [it, setId] = useState(0);
-  const [open, setOpen] = useState(false);
-
-  // console.log(post);
-
-  // const item = {
-  //   articlesId: 4,
-  //   createdAt: "2022년 08월 24일 12시 17분",
-  //   username: "test_samsta",
-  //   useremail: "sparta@gmail.com",
-  //   userprofile: "url",
-  //   content:
-  //     "잊지마 넌 흐린 어둠 사이 왼손으로 그린 별 하나 보이니 그 유일함이 얼마나 아름다운지 말야 넌 모르지 아직 못다 핀 널 위해 쓰여진 오래된 사랑시 헤매도 좋으니 웃음 짓게 되길. 잊지마 넌 흐린 어둠 사이 왼손으로 그린 별 하나 보이니 그 유일함이 얼마나 아름다운지 말야 넌 모르지 아직 못다 핀 널 위해 쓰여진 오래된 사랑시 헤매도 좋으니 웃음 짓게 되길", // "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type",
-  //   isMyArticles: true,
-  //   image: [
-  //     "blob:http://localhost:3000/80b985cc-a8e5-4838-9bea-f3761d43bf36",
-  //     "blob:http://localhost:3000/8458a0c6-a957-4a91-a743-78bbfd0298ac",
-  //     "blob:http://localhost:3000/9cfc53e6-9708-4594-9ea4-c40b4f8a71ec",
-  //   ],
-  //   isLike: false,
-  //   likeCnt: "5,024",
-  //   commentCnt: "12",
-  // };
 
   const {
     articlesId,
@@ -50,6 +26,7 @@ const PostItem = ({ postVal }) => {
     commentCnt,
   } = postVal;
 
+  const [open, setOpen] = useState(false);
   const [like, setLike] = useState(isLike);
 
   const handleDelete = (e) => {
@@ -62,35 +39,21 @@ const PostItem = ({ postVal }) => {
     }
   };
 
-  const handleOpen = (articlesId) => {
-    setId(articlesId);
-    setOpen(true);
-  };
-  const handleClose = () => setOpen(false);
-
-  const hashtagRegExp = /#[^\s]+/g;
+  const handleOpenModal = () => setOpen(!open);
 
   /* HASHTAG SEARCH ----------------------------------------------------------- */
+  const hashtagRegExp = /#[^\s]+/g;
+
   const handleClickHashtag = (e) => {
     const target = e.target.innerText;
     console.log(target);
   };
 
-  const handleOpenDetail = () => {
-    // dispatch(__getPost(articlesId));
-    setOpen(true);
-  };
-
-  const { post, isLoading, error } = useSelector((state) => state.posts);
-
-  console.log("POSTITEM", post);
-  console.log("OPEN", open);
-
   return (
     <StPostItem>
       <StPostInfo>
         <PostContainer>
-          <UserImg alt="user" src={anonymous_user} />
+          <UserImg alt="user" src={userprofile} referrerPolicy="no-referrer" />
           <span>{username}</span>
         </PostContainer>
         {isMyArticles && (
@@ -106,17 +69,10 @@ const PostItem = ({ postVal }) => {
             onClickHandler={() => setLike(!like)}
             variant={like ? "heart_filled" : "heart_outline"}
           />
-          <Button
-            variant="comment"
-            onClickHandler={() => handleOpen(articlesId)}
-          />
+          <Button variant="comment" onClickHandler={handleOpenModal} />
           {open && (
-            <Modal
-              handleOpenModal={() => {
-                setOpen(false);
-              }}
-            >
-              <Detail id={articlesId} handleOpenModal={() => setOpen(false)} />
+            <Modal handleOpenModal={handleOpenModal}>
+              <Detail id={articlesId} handleOpenModal={handleOpenModal} />
             </Modal>
           )}
         </BtnContainer>
@@ -190,7 +146,9 @@ const PostContainer = styled.div`
 
 const UserImg = styled.img`
   width: 32px;
+  height: 32px;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 const ImageContainer = styled.div`

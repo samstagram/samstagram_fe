@@ -3,7 +3,7 @@ import UserItem from "components/UserItem";
 import { colors } from "styles/theme";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import userListSlice, { __getUserList } from "redux/modules/userListSlice";
+import { __getUserList } from "redux/modules/userListSlice";
 
 const UserList = () => {
   const dispatch = useDispatch();

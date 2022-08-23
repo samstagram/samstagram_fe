@@ -20,15 +20,6 @@ const MyProfile = () => {
     dispatch(__getUsers());
   }, [dispatch]);
 
-  // const user = {
-  //   userId: 1,
-  //   username: "test_samsta",
-  //   useremail: "sparta@gmail.com",
-  //   userprofile: "url",
-  //   followingCnt: "4",
-  //   followersCnt: "2",
-  // };
-
   const {
     userId,
     username,
@@ -48,10 +39,12 @@ const MyProfile = () => {
     }
   };
 
+  console.log(userprofile);
+
   return (
     <StProfile>
       <ProfileContainer>
-        <img alt="user" src={anonymous_user} />
+        <img alt="user" src={userprofile} referrerPolicy="no-referrer" />
         <NameContainer>
           <StName>{username}</StName>
           <StEmail>{useremail}</StEmail>
@@ -85,7 +78,7 @@ const StProfile = styled.div`
   img {
     width: 56px;
     border-radius: 50%;
-    margin-right: 24px;
+    margin-right: 12px;
   }
 
   button {

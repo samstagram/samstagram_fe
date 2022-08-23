@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASE_URL, FAKE_TOKEN } from "shared/api";
+import { BASE_URL } from "shared/api";
 import { getCookie } from "shared/cookie";
 
 const initialState = {
@@ -58,7 +58,6 @@ export const __postPosts = createAsyncThunk(
 export const __deletePosts = createAsyncThunk(
   "deletePosts",
   async (payload, thunkAPI) => {
-    console.log(payload);
     try {
       await axios({
         method: "delete",
@@ -79,7 +78,6 @@ export const __deletePosts = createAsyncThunk(
 export const __getPost = createAsyncThunk(
   "getPost",
   async (payload, thunkAPI) => {
-    console.log("GETPOST", payload);
     try {
       const response = await axios({
         method: "get",
@@ -89,8 +87,6 @@ export const __getPost = createAsyncThunk(
           Authorization: getCookie("mycookie"),
         },
       });
-      console.log("PAYLOAD", payload);
-      console.log("GET POST", response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       console.log(error);
@@ -143,7 +139,6 @@ export const postsSlice = createSlice({
     [__getPost.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       state.post = payload;
-      console.log("STATE", state.post);
     },
     [__getPost.rejected]: (state, { payload }) => {
       state.isLoading = false;
