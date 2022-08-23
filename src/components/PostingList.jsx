@@ -9,36 +9,27 @@ const PostingList = () => {
   const dispatch = useDispatch();
 
   const { posts, isLoading } = useSelector((state) => state.posts);
-  // console.log(posts);
 
   useEffect(() => {
     dispatch(__getPosts());
   }, [dispatch]);
 
   return (
-    <>
-      {isLoading ? (
+    <StPostingList>
+      {posts.length === 0 ? (
         <EmptyContainer>
-          <Loading />
+          {isLoading ? <Loading /> : <span>There is no post.</span>}
         </EmptyContainer>
       ) : (
-        <StPostingList>
-          {posts.length === 0 ? (
-            <EmptyContainer>
-              <span>There is no post.</span>
-            </EmptyContainer>
-          ) : (
-            <>
-              {posts?.map((post) => (
-                <React.Fragment key={post.articlesId}>
-                  <PostItem postVal={post} />
-                </React.Fragment>
-              ))}
-            </>
-          )}
-        </StPostingList>
+        <>
+          {posts?.map((post) => (
+            <React.Fragment key={post.articlesId}>
+              <PostItem postVal={post} />
+            </React.Fragment>
+          ))}
+        </>
       )}
-    </>
+    </StPostingList>
   );
 };
 

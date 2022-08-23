@@ -44,5 +44,6 @@ const StModalBody = styled.div`
   height: 690px;
   background-color: ${colors.white};
   border-radius: 10px;
+  overflow: hidden;
   z-index: 111;
 `;
