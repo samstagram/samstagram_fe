@@ -16,13 +16,13 @@ export const __getPosts = createAsyncThunk(
     try {
       const response = await axios({
         method: "get",
-        url: `${BASE_URL}/api/articles?page=1&size=10`,
+        url: `${BASE_URL}/api/articles?page=${payload}&size=5`,
         headers: {
           "Content-Type": "application/json",
           Authorization: getCookie("mycookie"),
         },
       });
-      console.log(response.data);
+      console.log("=====GET POSTS RESPONSE=====", response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       console.log(error);
@@ -105,7 +105,9 @@ export const postsSlice = createSlice({
     },
     [__getPosts.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      state.posts = payload;
+      console.log("=====GET POSTS=====");
+      state.posts = [...state.posts, ...payload];
+      console.log(state.posts);
     },
     [__getPosts.rejected]: (state, { payload }) => {
       state.isLoading = false;
