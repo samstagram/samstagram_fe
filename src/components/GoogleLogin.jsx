@@ -20,7 +20,6 @@ const GoogleLogin = () => {
           const res = await axios.get(
             `${BASE_URL}/api/oauth/google/callback?code=${code}`
           );
-          console.log(res);
           (await res.headers.authorization) &&
             setCookie("mycookie", res.headers.authorization);
           await dispatch(__getUsers());

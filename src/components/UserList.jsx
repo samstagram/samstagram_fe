@@ -10,7 +10,7 @@ const UserList = () => {
 
   const { userlist, isLoading, error } = useSelector((state) => state.userlist);
 
-  console.log(userlist, isLoading, error);
+  // console.log(userlist, isLoading, error);
 
   useEffect(() => {
     dispatch(__getUserList());

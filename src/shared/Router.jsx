@@ -5,7 +5,7 @@ import ErrorPage from "pages/ErrorPage";
 import GoogleLogin from "components/GoogleLogin";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { usersAction, __getUsers } from "redux/modules/usersSlice";
+import { __getUsers } from "redux/modules/usersSlice";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -13,9 +13,6 @@ const Router = () => {
   const { user, isLogin, isLoading, error } = useSelector(
     (state) => state.users
   );
-
-  console.log(user);
-  console.log(isLogin);
 
   useEffect(() => {
     dispatch(__getUsers());

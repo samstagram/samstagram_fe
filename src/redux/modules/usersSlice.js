@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASE_URL, FAKE_TOKEN } from "shared/api";
-import { getCookie } from "shared/cookie";
+import { BASE_URL } from "shared/api";
+import { getCookie, setCookie } from "shared/cookie";
 
 const initialState = {
   user: {},
@@ -22,6 +22,8 @@ export const __getUsers = createAsyncThunk(
           Authorization: getCookie("mycookie"),
         },
       });
+      !getCookie("myprofile") &&
+        setCookie("myprofile", response.data.userprofile);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       console.log(error);
@@ -38,7 +40,14 @@ export const __postUsers = createAsyncThunk(
 export const usersSlice = createSlice({
   name: "usersSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    getUser: (state, action) => {
+      action.payload = {
+        userprofile: getCookie("userprofile"),
+        isLogin: getCookie("mycookie") ? true : false,
+      };
+    },
+  },
   extraReducers: {
     [__getUsers.pending]: (state) => {
       state.isLoading = true;

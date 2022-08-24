@@ -10,7 +10,7 @@ import { IoMdImages } from "react-icons/io";
 import { __getUsers } from "redux/modules/usersSlice";
 
 const Form = ({ handleOpenModal }) => {
-  const [text, setText] = useState({ content: " " });
+  const [text, setText] = useState({ content: "" });
   const [files, setFiles] = useState([]);
 
   const MAX_POSTS = 4;
@@ -34,8 +34,8 @@ const Form = ({ handleOpenModal }) => {
   }, [dispatch]);
 
   const onSubmitHandler = async () => {
-    if (files.length === 0) {
-      window.alert("사진을 1장 이상 선택해야 합니다.");
+    if (files.length === 0 || text.content.length === 0) {
+      window.alert("사진과 내용을 모두 입력해야 합니다.");
     } else {
       const formData = new FormData();
 
@@ -226,7 +226,7 @@ const StImg = styled.div`
   img {
     width: 100%;
     border-radius: 50%;
-    object-
+    object-fit: cover;
   }
 `;
 
