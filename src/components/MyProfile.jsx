@@ -35,7 +35,7 @@ const MyProfile = () => {
       window.alert("로그아웃 되었습니다.");
       await navigate("/");
     } else {
-      console.log("취소되었습니다.");
+      window.alert("취소되었습니다.");
     }
   };
 

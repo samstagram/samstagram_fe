@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Button from "components/elements/Button";
 import Carousel from "components/Carousel";
-import { __postPosts } from "redux/modules/postsSlice";
+import { __getPosts, __postPosts } from "redux/modules/postsSlice";
 import { colors } from "styles/theme";
 import { useDropzone } from "react-dropzone";
 import { IoMdImages } from "react-icons/io";
@@ -19,6 +19,7 @@ const Form = ({ handleOpenModal }) => {
   const dispatch = useDispatch();
 
   const { user, isLoading, error } = useSelector((state) => state.users);
+  const { posts, hasMore, keyword } = useSelector((state) => state.posts);
 
   const {
     userId,
@@ -31,7 +32,7 @@ const Form = ({ handleOpenModal }) => {
 
   useEffect(() => {
     dispatch(__getUsers());
-  }, [dispatch]);
+  }, [dispatch, posts]);
 
   const onSubmitHandler = async () => {
     if (files.length === 0 || text.content.length === 0) {
@@ -46,6 +47,7 @@ const Form = ({ handleOpenModal }) => {
       );
 
       await dispatch(__postPosts(formData));
+      await dispatch(__getPosts(0));
       await handleOpenModal();
     }
   };
@@ -80,8 +82,6 @@ const Form = ({ handleOpenModal }) => {
   useEffect(() => {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, []);
-
-  console.log(files);
 
   return (
     <DetailContainer>

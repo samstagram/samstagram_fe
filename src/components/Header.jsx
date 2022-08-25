@@ -1,27 +1,35 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Input from "components/elements/Input";
 import Button from "components/elements/Button";
 import samstagram_title from "assets/samstagram_logo.png";
 import { colors } from "styles/theme";
 import Modal from "components/layout/Modal";
 import Form from "components/Form";
 import { getCookie } from "shared/cookie";
+import SearchBar from "components/SearchBar";
+import { useDispatch } from "react-redux";
+import { __getPosts } from "redux/modules/postsSlice";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleGoToHome = () => {
+    navigate("/");
+    dispatch(__getPosts(0));
+  };
 
   return (
     <StNav>
       <StLogo alt="samstagram title" src={samstagram_title} />
       {getCookie("mycookie") && (
         <>
-          <Input variant="header" text="검색" />
+          <SearchBar />
           <BtnContainer>
-            <Button variant="home" onClickHandler={() => navigate("/")} />
+            <Button variant="home" onClickHandler={handleGoToHome} />
             <Button
               variant="plus"
               onClickHandler={() => {
