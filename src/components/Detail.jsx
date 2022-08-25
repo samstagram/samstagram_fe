@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Button from "components/elements/Button";
 import { colors } from "styles/theme";
-import anonymous_user from "assets/anonymous_user.jpg";
 import CommentList from "components/CommentList";
 import CommentForm from "components/CommentForm";
 import Carousel from "components/Carousel";
@@ -33,7 +32,9 @@ const Detail = ({ id, handleOpenModal }) => {
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <StLoading>
+          <Loading />
+        </StLoading>
       ) : (
         <DetailContainer>
           <DetailHeader>
@@ -66,6 +67,13 @@ const Detail = ({ id, handleOpenModal }) => {
 };
 
 export default Detail;
+
+const StLoading = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
 
 const DetailContainer = styled.div`
   width: 100%;

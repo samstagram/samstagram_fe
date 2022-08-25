@@ -20,14 +20,12 @@ const GoogleLogin = () => {
           const res = await axios.get(
             `${BASE_URL}/api/oauth/google/callback?code=${code}`
           );
-          console.log(res);
           (await res.headers.authorization) &&
             setCookie("mycookie", res.headers.authorization);
           await dispatch(__getUsers());
 
           navigate("/");
         } catch (err) {
-          console.log("소셜로그인 에러", err);
           window.alert("로그인에 실패하였습니다.");
         }
       };

@@ -19,7 +19,6 @@ const Carousel = ({ children, length }) => {
     <StCarousel>
       <Slider {...settings}>
         {children?.map((val) => {
-          // console.log("CAROUSEL", val);
           return (
             <StImg key={val} length={length}>
               <img alt="upload post" length={length} src={val} />

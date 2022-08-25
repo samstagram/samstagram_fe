@@ -8,46 +8,38 @@ import Loading from "components/Loading";
 const PostingList = () => {
   const dispatch = useDispatch();
 
-  const [target, setTarget] = useState(null);
-  const pageRef = useRef(0);
+  const { posts, hasMore, keyword, isLoading, error } = useSelector(
+    (state) => state.posts
+  );
 
-  const { posts, isLoading } = useSelector((state) => state.posts);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [pageNum, setPageNum] = useState(1);
+  const observerRef = useRef();
 
-  const fetchData = () => {
-    console.log("FETCHDATA", pageRef.current);
-    if (pageRef.current === 1) {
-      pageRef.current += 1;
-    } else {
-      dispatch(__getPosts(pageRef.current));
-      pageRef.current += 1;
-    }
+  useEffect(() => {
+    keyword === "" && dispatch(__getPosts(pageNum));
+  }, [dispatch, pageNum, keyword]);
+
+  const observer = (node) => {
+    if (isLoading) return;
+    if (keyword) return;
+    if (observerRef.current) observerRef.current.disconnect();
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasMore) {
+          setPageNum((page) => page + 1);
+        }
+        if (!hasMore) {
+          setAlertMessage("게시물이 없습니다.");
+        }
+      },
+      { threshold: 0.5 }
+    );
+    node && observerRef.current.observe(node);
   };
 
-  useEffect(() => {
-    console.log("USEEFFECT", pageRef.current);
-    if (pageRef.current === 0) {
-      pageRef.current += 1;
-    } else {
-      fetchData();
-    }
-  }, []);
-
-  useEffect(() => {
-    let observer;
-    // 컴포넌트 렌더링이 되지 않으면 observe할 수 없음
-    if (target) {
-      const onIntersect = async ([entry], observer) => {
-        if (entry.isIntersecting) {
-          observer.unobserve(entry.target);
-          await fetchData();
-          observer.observe(entry.target);
-        }
-      };
-      observer = new IntersectionObserver(onIntersect, { threshold: 1 });
-      observer.observe(target);
-    }
-    return () => observer && observer.disconnect();
-  }, [target]);
+  console.log("PAGE", pageNum);
+  console.log("HASMORE", hasMore);
 
   return (
     <StPostingList>
@@ -64,8 +56,8 @@ const PostingList = () => {
           ))}
         </>
       )}
-      <div ref={setTarget} />
-      {/* <>{isPageLoading && <Loading />}</> */}
+      {keyword === "" && <div ref={observer} />}
+      <StAlertMessage>{alertMessage}</StAlertMessage>
     </StPostingList>
   );
 };
@@ -90,4 +82,10 @@ const EmptyContainer = styled.div`
     font-size: 24px;
     font-weight: 600;
   }
+`;
+
+const StAlertMessage = styled.div`
+  font-size: 20px;
+  font-weight: 500;
+  padding: 15px 0 40px 0;
 `;

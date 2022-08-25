@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Button from "components/elements/Button";
 import Carousel from "components/Carousel";
-import { __postPosts } from "redux/modules/postsSlice";
+import { __getPosts, __postPosts } from "redux/modules/postsSlice";
 import { colors } from "styles/theme";
 import { useDropzone } from "react-dropzone";
 import { IoMdImages } from "react-icons/io";
 import { __getUsers } from "redux/modules/usersSlice";
 
 const Form = ({ handleOpenModal }) => {
-  const [text, setText] = useState({ content: " " });
+  const [text, setText] = useState({ content: "" });
   const [files, setFiles] = useState([]);
 
   const MAX_POSTS = 4;
@@ -19,6 +19,7 @@ const Form = ({ handleOpenModal }) => {
   const dispatch = useDispatch();
 
   const { user, isLoading, error } = useSelector((state) => state.users);
+  const { posts, hasMore, keyword } = useSelector((state) => state.posts);
 
   const {
     userId,
@@ -31,11 +32,11 @@ const Form = ({ handleOpenModal }) => {
 
   useEffect(() => {
     dispatch(__getUsers());
-  }, [dispatch]);
+  }, [dispatch, posts]);
 
   const onSubmitHandler = async () => {
-    if (files.length === 0) {
-      window.alert("사진을 1장 이상 선택해야 합니다.");
+    if (files.length === 0 || text.content.length === 0) {
+      window.alert("사진과 내용을 모두 입력해야 합니다.");
     } else {
       const formData = new FormData();
 
@@ -46,6 +47,7 @@ const Form = ({ handleOpenModal }) => {
       );
 
       await dispatch(__postPosts(formData));
+      await dispatch(__getPosts(0));
       await handleOpenModal();
     }
   };
@@ -80,8 +82,6 @@ const Form = ({ handleOpenModal }) => {
   useEffect(() => {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, []);
-
-  console.log(files);
 
   return (
     <DetailContainer>
@@ -226,7 +226,7 @@ const StImg = styled.div`
   img {
     width: 100%;
     border-radius: 50%;
-    object-
+    object-fit: cover;
   }
 `;
 

@@ -6,6 +6,9 @@ import { getCookie } from "shared/cookie";
 const initialState = {
   posts: [],
   post: {},
+  page: 1,
+  keyword: "",
+  hasMore: false,
   isLoading: true,
   error: null,
 };
@@ -13,17 +16,18 @@ const initialState = {
 export const __getPosts = createAsyncThunk(
   "getPosts",
   async (payload, thunkAPI) => {
+    const page = payload === 0 ? payload + 1 : payload;
     try {
       const response = await axios({
         method: "get",
-        url: `${BASE_URL}/api/articles?page=${payload}&size=5`,
+        url: `${BASE_URL}/api/articles?page=${page}&size=10`,
         headers: {
           "Content-Type": "application/json",
           Authorization: getCookie("mycookie"),
         },
       });
       console.log("=====GET POSTS RESPONSE=====", response.data);
-      return thunkAPI.fulfillWithValue(response.data);
+      return thunkAPI.fulfillWithValue({ data: response.data, page: payload });
     } catch (error) {
       console.log(error);
       return thunkAPI.rejectWithValue(error);
@@ -95,6 +99,30 @@ export const __getPost = createAsyncThunk(
   }
 );
 
+export const __getHashtagPost = createAsyncThunk(
+  "getHashtagPost",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: `${BASE_URL}/api/articles/search?hashtag=${payload}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: getCookie("mycookie"),
+        },
+      });
+      console.log("GETHASHTAGPOST", response.data);
+      return thunkAPI.fulfillWithValue({
+        data: response.data,
+        keyword: payload,
+      });
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const postsSlice = createSlice({
   name: "postsSlice",
   initialState,
@@ -106,8 +134,12 @@ export const postsSlice = createSlice({
     [__getPosts.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       console.log("=====GET POSTS=====");
-      state.posts = [...state.posts, ...payload];
-      console.log(state.posts);
+      state.keyword = "";
+      // state.posts = [...state.posts, ...payload.data];
+      state.posts =
+        payload.page === 0 ? payload.data : [...state.posts, ...payload.data];
+      state.hasMore = payload.data.length > 0;
+      console.log(state.posts, state.hasMore);
     },
     [__getPosts.rejected]: (state, { payload }) => {
       state.isLoading = false;
@@ -119,6 +151,7 @@ export const postsSlice = createSlice({
     [__postPosts.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       state.posts.unshift(payload);
+      state.keyword = "";
     },
     [__postPosts.rejected]: (state, { payload }) => {
       state.isLoading = false;
@@ -130,6 +163,7 @@ export const postsSlice = createSlice({
     [__deletePosts.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       state.posts = state.posts.filter((item) => item.articlesId !== payload);
+      state.keyword = "";
     },
     [__deletePosts.rejected]: (state, { payload }) => {
       state.isLoading = false;
@@ -143,6 +177,24 @@ export const postsSlice = createSlice({
       state.post = payload;
     },
     [__getPost.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.error = payload;
+    },
+    [__getHashtagPost.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [__getHashtagPost.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      console.log("=====GET HASHTAG POSTS=====");
+      console.log(payload.data);
+      console.log(payload.keyword);
+      state.posts = payload.data.filter((val, index, arr) => {
+        const jsonArr = arr.map((val) => JSON.stringify(val));
+        return jsonArr.indexOf(JSON.stringify(val)) === index;
+      });
+      state.keyword = payload.keyword;
+    },
+    [__getHashtagPost.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
     },

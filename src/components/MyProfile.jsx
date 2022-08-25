@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import anonymous_user from "assets/anonymous_user.jpg";
 import Button from "components/elements/Button";
 import { colors } from "styles/theme";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,15 +30,14 @@ const MyProfile = () => {
 
   const handleSignout = async () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
-      removeCookie("mycookie");
+      await removeCookie("mycookie");
+      await removeCookie("myprofile");
       window.alert("로그아웃 되었습니다.");
-      (await !getCookie("mycookie")) && (await navigate("/"));
+      await navigate("/");
     } else {
-      console.log("취소되었습니다.");
+      window.alert("취소되었습니다.");
     }
   };
-
-  console.log(userprofile);
 
   return (
     <StProfile>

@@ -1,42 +1,58 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Input from "components/elements/Input";
 import Button from "components/elements/Button";
-import anonymous_user from "assets/anonymous_user.jpg";
 import samstagram_title from "assets/samstagram_logo.png";
 import { colors } from "styles/theme";
 import Modal from "components/layout/Modal";
 import Form from "components/Form";
+import { getCookie } from "shared/cookie";
+import SearchBar from "components/SearchBar";
+import { useDispatch } from "react-redux";
+import { __getPosts } from "redux/modules/postsSlice";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleGoToHome = () => {
+    navigate("/");
+    dispatch(__getPosts(0));
+  };
 
   return (
     <StNav>
       <StLogo alt="samstagram title" src={samstagram_title} />
-      <Input variant="header" text="검색" />
-      <BtnContainer>
-        <Button variant="home" onClickHandler={() => navigate("/")} />
-        <Button
-          variant="plus"
-          onClickHandler={() => {
-            setOpen(!open);
-          }}
-        />
-        {open && (
-          <Modal
-            handleOpenModal={() => {
-              setOpen(!open);
-            }}
-          >
-            <Form handleOpenModal={() => setOpen(!open)} />
-          </Modal>
-        )}
-        <StProfile alt="user image" src={anonymous_user} />
-      </BtnContainer>
+      {getCookie("mycookie") && (
+        <>
+          <SearchBar />
+          <BtnContainer>
+            <Button variant="home" onClickHandler={handleGoToHome} />
+            <Button
+              variant="plus"
+              onClickHandler={() => {
+                setOpen(!open);
+              }}
+            />
+            {open && (
+              <Modal
+                handleOpenModal={() => {
+                  setOpen(!open);
+                }}
+              >
+                <Form handleOpenModal={() => setOpen(!open)} />
+              </Modal>
+            )}
+            <StProfile
+              alt="user image"
+              src={getCookie("myprofile")}
+              referrerPolicy="no-referrer"
+            />
+          </BtnContainer>
+        </>
+      )}
     </StNav>
   );
 };

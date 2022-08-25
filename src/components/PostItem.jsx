@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import anonymous_user from "assets/anonymous_user.jpg";
 import { colors } from "styles/theme";
 import Button from "components/elements/Button";
 import { useState } from "react";
@@ -7,7 +6,7 @@ import Modal from "components/layout/Modal";
 import Detail from "components/Detail";
 import Carousel from "components/Carousel";
 import { useDispatch } from "react-redux";
-import { __deletePosts } from "redux/modules/postsSlice";
+import { __deletePosts, __getHashtagPost } from "redux/modules/postsSlice";
 
 const PostItem = ({ postVal }) => {
   const dispatch = useDispatch();
@@ -35,7 +34,7 @@ const PostItem = ({ postVal }) => {
       dispatch(__deletePosts(articlesId));
       window.alert("삭제되었습니다.");
     } else {
-      console.log("취소되었습니다.");
+      window.alert("취소되었습니다.");
     }
   };
 
@@ -44,9 +43,9 @@ const PostItem = ({ postVal }) => {
   /* HASHTAG SEARCH ----------------------------------------------------------- */
   const hashtagRegExp = /#[^\s]+/g;
 
-  const handleClickHashtag = (e) => {
-    const target = e.target.innerText;
-    console.log(target);
+  const handleClickHashtag = async (e) => {
+    const target = e.target.innerText.replace("#", "");
+    await dispatch(__getHashtagPost(target));
   };
 
   return (
