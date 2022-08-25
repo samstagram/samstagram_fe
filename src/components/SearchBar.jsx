@@ -35,15 +35,10 @@ const SearchBar = () => {
   };
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     setSearchText(e.target.value);
     setContentNum(0);
     dataList.map((data) => {
-      console.log(data);
       const text = data.hashtagList.toString();
-      console.log(text);
-      console.log(e.target.value);
-      console.log(text.toLowerCase().includes(e.target.value.toLowerCase()));
 
       if (text.toLowerCase().includes(e.target.value.toLowerCase())) {
         setContentNum((contentNum) => contentNum + 1);
@@ -58,8 +53,6 @@ const SearchBar = () => {
     setContentNum(0);
     setSearchText("");
   };
-
-  console.log("contentNum", contentNum);
 
   return (
     <StSearch>

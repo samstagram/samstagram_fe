@@ -33,7 +33,8 @@ const MyProfile = () => {
       await removeCookie("mycookie");
       await removeCookie("myprofile");
       window.alert("로그아웃 되었습니다.");
-      await navigate("/");
+      window.location.reload();
+      // await navigate("/");
     } else {
       window.alert("취소되었습니다.");
     }

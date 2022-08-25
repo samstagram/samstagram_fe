@@ -26,10 +26,8 @@ export const __getPosts = createAsyncThunk(
           Authorization: getCookie("mycookie"),
         },
       });
-      console.log("=====GET POSTS RESPONSE=====", response.data);
       return thunkAPI.fulfillWithValue({ data: response.data, page: payload });
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -38,7 +36,6 @@ export const __getPosts = createAsyncThunk(
 export const __postPosts = createAsyncThunk(
   "postPosts",
   async (payload, thunkAPI) => {
-    console.log(payload);
     try {
       const response = await axios({
         method: "post",
@@ -50,10 +47,8 @@ export const __postPosts = createAsyncThunk(
         },
         data: payload,
       });
-      console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -73,7 +68,6 @@ export const __deletePosts = createAsyncThunk(
       });
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -93,7 +87,6 @@ export const __getPost = createAsyncThunk(
       });
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -111,13 +104,31 @@ export const __getHashtagPost = createAsyncThunk(
           Authorization: getCookie("mycookie"),
         },
       });
-      console.log("GETHASHTAGPOST", response.data);
       return thunkAPI.fulfillWithValue({
         data: response.data,
         keyword: payload,
       });
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const __patchLikePosts = createAsyncThunk(
+  "patchLikePosts",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await axios({
+        method: "patch",
+        url: `${BASE_URL}/api/articles`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: getCookie("mycookie"),
+        },
+        data: payload,
+      });
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -133,13 +144,10 @@ export const postsSlice = createSlice({
     },
     [__getPosts.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      console.log("=====GET POSTS=====");
       state.keyword = "";
-      // state.posts = [...state.posts, ...payload.data];
       state.posts =
         payload.page === 0 ? payload.data : [...state.posts, ...payload.data];
       state.hasMore = payload.data.length > 0;
-      console.log(state.posts, state.hasMore);
     },
     [__getPosts.rejected]: (state, { payload }) => {
       state.isLoading = false;
@@ -185,9 +193,6 @@ export const postsSlice = createSlice({
     },
     [__getHashtagPost.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      console.log("=====GET HASHTAG POSTS=====");
-      console.log(payload.data);
-      console.log(payload.keyword);
       state.posts = payload.data.filter((val, index, arr) => {
         const jsonArr = arr.map((val) => JSON.stringify(val));
         return jsonArr.indexOf(JSON.stringify(val)) === index;
@@ -195,6 +200,17 @@ export const postsSlice = createSlice({
       state.keyword = payload.keyword;
     },
     [__getHashtagPost.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.error = payload;
+    },
+    [__patchLikePosts.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [__patchLikePosts.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.keyword = "";
+    },
+    [__patchLikePosts.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
     },

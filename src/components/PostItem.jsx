@@ -6,7 +6,11 @@ import Modal from "components/layout/Modal";
 import Detail from "components/Detail";
 import Carousel from "components/Carousel";
 import { useDispatch } from "react-redux";
-import { __deletePosts, __getHashtagPost } from "redux/modules/postsSlice";
+import {
+  __deletePosts,
+  __getHashtagPost,
+  __patchLikePosts,
+} from "redux/modules/postsSlice";
 
 const PostItem = ({ postVal }) => {
   const dispatch = useDispatch();
@@ -15,7 +19,6 @@ const PostItem = ({ postVal }) => {
     articlesId,
     createdAt,
     username,
-    useremail,
     userprofile,
     content,
     isMyArticles,
@@ -26,7 +29,7 @@ const PostItem = ({ postVal }) => {
   } = postVal;
 
   const [open, setOpen] = useState(false);
-  const [like, setLike] = useState(isLike);
+  const [like, setLike] = useState({ articlesId: articlesId, isLike: isLike });
 
   const handleDelete = (e) => {
     if (window.confirm("삭제하시겠습니까?")) {
@@ -39,6 +42,11 @@ const PostItem = ({ postVal }) => {
   };
 
   const handleOpenModal = () => setOpen(!open);
+
+  const handleClickLike = () => {
+    dispatch(__patchLikePosts({ ...like, isLike: !like.isLike }));
+    setLike({ ...like, isLike: !like.isLike });
+  };
 
   /* HASHTAG SEARCH ----------------------------------------------------------- */
   const hashtagRegExp = /#[^\s]+/g;
@@ -65,8 +73,8 @@ const PostItem = ({ postVal }) => {
       <StContent>
         <BtnContainer>
           <Button
-            onClickHandler={() => setLike(!like)}
-            variant={like ? "heart_filled" : "heart_outline"}
+            onClickHandler={handleClickLike}
+            variant={like.isLike ? "heart_filled" : "heart_outline"}
           />
           <Button variant="comment" onClickHandler={handleOpenModal} />
           {open && (
@@ -98,7 +106,7 @@ const PostItem = ({ postVal }) => {
             )}
           </StText>
           <StTime>{createdAt}</StTime>
-          <StComment onClick={() => console.log("COMMENT CLICKED!")}>
+          <StComment onClick={() => {}}>
             댓글 {commentCnt}개 모두 보기
           </StComment>
         </ContentContainer>
