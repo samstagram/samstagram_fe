@@ -38,9 +38,6 @@ const PostingList = () => {
     node && observerRef.current.observe(node);
   };
 
-  console.log("PAGE", pageNum);
-  console.log("HASMORE", hasMore);
-
   return (
     <StPostingList>
       {posts.length === 0 ? (

@@ -32,7 +32,6 @@ export const __getComments = createAsyncThunk(
 export const __postComments = createAsyncThunk(
   "postComments",
   async (payload, thunkAPI) => {
-    console.log(payload);
     try {
       const response = await axios({
         method: "post",

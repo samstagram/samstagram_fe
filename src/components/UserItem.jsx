@@ -4,7 +4,7 @@ import Button from "components/elements/Button";
 import anonymous_user from "assets/anonymous_user.jpg";
 import { colors } from "styles/theme";
 import { useDispatch } from "react-redux";
-import { usersAction, __getUsers, __postUsers } from "redux/modules/usersSlice";
+import { __getUsers } from "redux/modules/usersSlice";
 import { __postUserList } from "redux/modules/userListSlice";
 
 const UserItem = ({ user }) => {

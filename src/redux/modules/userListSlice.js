@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASE_URL, FAKE_TOKEN } from "shared/api";
+import { BASE_URL } from "shared/api";
 import { getCookie } from "shared/cookie";
 
 const initialState = {
@@ -23,7 +23,6 @@ export const __getUserList = createAsyncThunk(
       });
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -32,7 +31,6 @@ export const __getUserList = createAsyncThunk(
 export const __postUserList = createAsyncThunk(
   "postUserList",
   async (payload, thunkAPI) => {
-    console.log(payload);
     try {
       const response = await axios({
         method: "post",
@@ -43,10 +41,8 @@ export const __postUserList = createAsyncThunk(
         },
         data: payload,
       });
-      console.log(response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }

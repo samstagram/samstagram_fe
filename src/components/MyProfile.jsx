@@ -4,7 +4,7 @@ import { colors } from "styles/theme";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { __getUsers } from "redux/modules/usersSlice";
-import { getCookie, removeCookie } from "shared/cookie";
+import { removeCookie } from "shared/cookie";
 import { useNavigate } from "react-router-dom";
 
 const MyProfile = () => {
@@ -33,7 +33,8 @@ const MyProfile = () => {
       await removeCookie("mycookie");
       await removeCookie("myprofile");
       window.alert("로그아웃 되었습니다.");
-      await navigate("/");
+      window.location.reload();
+      // await navigate("/");
     } else {
       window.alert("취소되었습니다.");
     }

@@ -26,7 +26,6 @@ export const __getUsers = createAsyncThunk(
         setCookie("myprofile", response.data.userprofile);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }
