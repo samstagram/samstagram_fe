@@ -4,7 +4,7 @@ import { colors } from "styles/theme";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { __getUsers } from "redux/modules/usersSlice";
-import { getCookie, removeCookie } from "shared/cookie";
+import { removeCookie } from "shared/cookie";
 import { useNavigate } from "react-router-dom";
 
 const MyProfile = () => {

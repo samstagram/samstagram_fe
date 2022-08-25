@@ -5,7 +5,7 @@ import CommentList from "components/CommentList";
 import CommentForm from "components/CommentForm";
 import Carousel from "components/Carousel";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { __getPost } from "redux/modules/postsSlice";
 import Loading from "./Loading";
 
