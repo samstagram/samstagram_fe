@@ -1,70 +1,114 @@
-# Getting Started with Create React App
+# <img width="30px" src="https://user-images.githubusercontent.com/69451758/194764808-d6fd7767-afaa-4d41-819c-1a42557f2596.png" /> Samstagram
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduce
 
-## Available Scripts
+![sam_sample](https://user-images.githubusercontent.com/69451758/194764686-f8b905c0-2d15-425d-886e-4ecaf9ae444f.jpg)
 
-In the project directory, you can run:
+<img width="18px" src="https://user-images.githubusercontent.com/69451758/194764808-d6fd7767-afaa-4d41-819c-1a42557f2596.png" /> <b>인스타그램 클론 코딩 프로젝트, Samstagram입니다.</b>
 
-### `yarn start`
+<br />
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 기능 소개
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<details>
+<summary><b>소셜 로그인</b></summary>
+  
+![sam_google](https://user-images.githubusercontent.com/69451758/194765506-1a550ce2-e0b9-4d74-a1c5-6d4e106d956a.jpg)  
+- Google 소셜로그인으로 삼스타그램을 이용할 수 있습니다.
 
-### `yarn test`
+</details>
+  
+<details>
+<summary><b>게시글 무한스크롤</b></summary>
+  
+![sam_infinite_scroll](https://user-images.githubusercontent.com/69451758/194766051-44ebe5ed-2ba0-4853-9ce0-6a0f2becb469.gif)
+  
+- 삼스타그램의 게시글을 무한스크롤로 확인할 수 있습니다. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+</details>
 
-### `yarn build`
+<details>
+<summary><b>게시글 검색 및 해시태그 검색</b></summary>
+    
+![sam_search](https://user-images.githubusercontent.com/69451758/194766105-8890213f-bedb-4ef0-bf97-f822ab621f18.gif)
+![sam_hashtag](https://user-images.githubusercontent.com/69451758/194766107-af119860-362f-41ed-bbc3-fa30804e625a.gif)
+    
+- 해시태그에 상단 검색바에 입력한 단어를 포함하는 게시글들을 볼 수 있습니다.
+- 게시글의 해시태그를 클릭하면 해시태그 단어를 포함하는 게시글만 모아서 볼 수 있습니다.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+</details>
+  
+<details>
+<summary><b>게시글 상세 보기</b></summary>
+   
+![sam_carousel](https://user-images.githubusercontent.com/69451758/194766278-b525b0ed-ba4d-4855-932d-6d2d81ab3717.gif)  
+![sam_detail](https://user-images.githubusercontent.com/69451758/194766280-7caf78a1-3e01-4f0f-a181-ed62d2fad9ee.gif)  
+    
+- 이미지 캐러셀로 여러 이미지를 확인하고 게시글 클릭을 통한 상세 보기가 가능합니다.
+- 게시글 상세 보기에선 댓글 작성 및 다른 사용자들이 작성한 댓글을 볼 수 있습니다.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+</details>
+  
+<details>
+<summary><b>게시글 작성 및 삭제</b></summary>
+  
+![sam_post](https://user-images.githubusercontent.com/69451758/194766258-ee96242c-9672-416d-a730-9c7307c38ccc.gif) 
+![sam_delete](https://user-images.githubusercontent.com/69451758/194766263-8e7efc45-0477-4c42-8a4e-0b9ed8451a55.gif)
+    
+- 게시글을 작성하고 삭제할 수 있습니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+</details>
+  
+<details>
+<summary><b>사용자 팔로우</b></summary>
 
-### `yarn eject`
+![sam_follow](https://user-images.githubusercontent.com/69451758/194766295-52b07973-e0c8-4334-ad69-bcba955cf735.gif)
+  
+- 다른 사용자를 팔로우 또는 언팔로우 할 수 있습니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+</details>
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<br />
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Members
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+| 이름       | 포지션       | Github        | 
+| ---------- | ---------------- | -------------------------------- |
+| **배근아** | `Frontend` | https://github.com/green9930 | 
+| **정성일** | `Frontend` | https://github.com/jsi7304 | 
 
-## Learn More
+<br />
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Skills
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<p>
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
+  <img src="https://img.shields.io/badge/reduxtoolkit-764ABC?style=for-the-badge&logo=redux&logoColor=white">
+  <img src="https://img.shields.io/badge/reduxthunk-764ABC?style=for-the-badge&logo=redux&logoColor=white">
+  <br />
+  <img src="https://img.shields.io/badge/React Router-CA4245?style=for-the-badge&logo=React Router&logoColor=white">
+  <img src="https://img.shields.io/badge/Styled Components-DB7093?style=for-the-badge&logo=styledComponents&logoColor=white">
+</p>
 
-### Code Splitting
+<br />
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 기술 피드백
 
-### Analyzing the Bundle Size
+<details>
+<summary><b>검색 기능 구현 방식</b></summary>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+<br />
 
-### Making a Progressive Web App
+🤔**검색 시 데이터 조회를 어떻게 할 것인가?**  
+1. 검색어로 조회할 데이터를 GET요청으로 한번에 불러온 뒤, 그 안에서 입력값을 조회한다.
+2. 검색어를 입력할 때마다 해당 단어가 포함된 게시글이 있는지 계속 GET요청을 보낸다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+**기술적 의사 결정**  
+구현하려는 검색 기능은 단어를 입력할 때마다 해당되는 게시글의 개수를 하단에 보여줘야 했습니다.   
 
-### Advanced Configuration
+**피드백**  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+</details>
+  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
